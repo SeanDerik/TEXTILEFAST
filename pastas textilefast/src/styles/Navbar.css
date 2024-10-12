@@ -7,7 +7,7 @@
 }
 
 .button {
-    width: 60px;
+    width: fit-content;
     height: 50px;
     border: none;         
     border-radius: 0;
@@ -21,7 +21,7 @@
     color: rgb(255, 255, 255);
 }
 .button:hover {
-    width: 60px;
+    width: fit-content;
     height: 50px;
     border: none;         
     border-radius: 0;

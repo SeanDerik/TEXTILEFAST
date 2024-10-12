@@ -1,6 +1,7 @@
 import { Home } from "../pages/Home"
 import { Test } from "../pages/Test"
 import { Paginaproduto } from "../pages/Paginaproduto"
+import { Catalogpage } from "../pages/Catalogpage";
 import { Routes, Route } from "react-router-dom"
 import '../styles/index.css';
 
@@ -11,7 +12,8 @@ export function Approutes(){
     <Routes>
       <Route path="/home" element={ <Home /> } />
       <Route path="/test" element={ <Test /> } />
-      <Route path="/product-page" element={ <Paginaproduto /> } />    
+      <Route path="/product-page" element={ <Paginaproduto /> } />
+      <Route path="/catalogpage" element={ <Catalogpage /> } />    
     </Routes>
     </>
     )
