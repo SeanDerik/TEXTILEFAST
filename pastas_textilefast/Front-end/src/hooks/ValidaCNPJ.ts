@@ -1,18 +1,12 @@
-// hooks/useValidarCNPJ.ts
 import { useState } from 'react';
 
 const useValidarCNPJ = () => {
-  const [cnpjValido, setCnpjValido] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   const validarCNPJ = (cnpj: string) => {
     cnpj = cnpj.replace(/[^\d]+/g, '');
-    if (cnpj.length !== 14) {
-      setCnpjValido(false);
-      return false;
-    }
-    setCnpjValido(true);
-    return true;
+    if (cnpj.length !== 14) return false;
+    return true; // Validação básica somente pelo comprimento aqui
   };
 
   const buscarDadosCNPJ = async (cnpj: string) => {
@@ -25,14 +19,14 @@ const useValidarCNPJ = () => {
         return null;
       }
 
-      return data; // Retorna os dados da API
+      return data; // Retornar os dados buscados
     } catch (error) {
       setError('Erro ao buscar CNPJ!');
       return null;
     }
   };
 
-  return { cnpjValido, setCnpjValido, error, validarCNPJ, buscarDadosCNPJ };
+  return { validarCNPJ, buscarDadosCNPJ, error };
 };
 
 export default useValidarCNPJ;

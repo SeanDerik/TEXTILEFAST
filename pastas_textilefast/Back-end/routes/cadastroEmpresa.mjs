@@ -2,7 +2,7 @@ import express from 'express';
 import Empresas from '../models/empresas.mjs';
 
 const router = express.Router();
-router.post('/', async (req, res) => {
+router.post('/cadastro', async (req, res) => {
   const { cnpj, razao_social, nome_fantasia, tipo_empresa, email, telefone, endereco } = req.body;
 
   try {

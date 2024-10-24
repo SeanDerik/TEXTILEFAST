@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import '../styles/Cadastro.css';
-import useCadastroEmpresa from '../hooks/ValidaCNPJ';
+import useValidarCNPJ from '../hooks/ValidaCNPJ';
 
 interface FormData {
   nome: string;
@@ -15,7 +15,6 @@ interface FormData {
   endereco: string;
 }
 
-// Componente de cadastro
 const Cadastro: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     nome: '',
@@ -25,59 +24,33 @@ const Cadastro: React.FC = () => {
     cnpj: '',
     razaoSocial: '',
     nomeFantasia: '',
-    tipoEmpresa: '',
+    tipoEmpresa: 'comprador', // Valor padrão
     telefone: '',
     endereco: '',
   });
 
   const [cnpjValido, setCnpjValido] = useState(true);
-  const { cadastrarEmpresa, loading, error, success } = useCadastroEmpresa();
+  const { validarCNPJ, buscarDadosCNPJ, error } = useValidarCNPJ();
 
-  // Função para buscar dados do CNPJ
-  const buscarDadosCNPJ = async (cnpj: string) => {
-    cnpj = cnpj.replace(/[^\d]+/g, ''); // Remove caracteres não numéricos
-    if (cnpj.length !== 14) {
-      alert('CNPJ inválido!');
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:3001/api/cnpj/${cnpj}`);
-      const data = await response.json();
-
-      console.log('Resposta da API:', data); // Log da resposta da API
-
-      if (data.status === 'ERROR') {
-        alert('CNPJ não encontrado!');
-        return;
-      }
-
-      // Preenchendo dados da API no formulário
-      setFormData((prevData) => ({
-        ...prevData,
-        razaoSocial: data.nome,
-        nomeFantasia: data.fantasia,
-        telefone: data.telefone,
-        endereco: `${data.logradouro}, ${data.municipio} - ${data.uf}`,
-      }));
-    } catch (error) {
-      console.error('Erro ao buscar o CNPJ:', error);
-      alert('Erro ao buscar CNPJ!');
-    }
-  };
-
-  // Validador de CNPJ ao perder foco
-  const handleCNPJBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+  const handleCNPJBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const cnpj = e.target.value;
     if (validarCNPJ(cnpj)) {
-      setCnpjValido(true); // CNPJ válido
-      buscarDadosCNPJ(cnpj); // Chama a API ao perder o foco do campo CNPJ
+      setCnpjValido(true);
+      const data = await buscarDadosCNPJ(cnpj); // Buscar dados do CNPJ pela API
+      if (data) {
+        setFormData({
+          ...formData,
+          razaoSocial: data.nome,
+          nomeFantasia: data.fantasia,
+          telefone: data.telefone,
+          endereco: `${data.logradouro}, ${data.municipio} - ${data.uf}`,
+        });
+      }
     } else {
-      setCnpjValido(false); // CNPJ inválido
+      setCnpjValido(false);
     }
   };
 
-  // Função para atualizar o estado do formulário
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({
       ...formData,
@@ -85,17 +58,32 @@ const Cadastro: React.FC = () => {
     });
   };
 
-  // Função para enviar o formulário
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     if (!cnpjValido) {
       alert('CNPJ inválido!');
       return;
     }
 
-    // Cadastrando a empresa
-    await cadastrarEmpresa(formData);
+    // Enviar formData para o backend
+    try {
+      const response = await fetch('http://localhost:3001/api/empresas/cadastro', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert('Empresa cadastrada com sucesso!');
+      } else {
+        alert(`Erro ao cadastrar empresa: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Erro no cadastro:', error);
+    }
   };
 
   return (
@@ -114,13 +102,13 @@ const Cadastro: React.FC = () => {
               name="cnpj"
               value={formData.cnpj}
               onChange={handleChange}
-              onBlur={handleCNPJBlur} // Chama a função ao perder o foco do campo
+              onBlur={handleCNPJBlur}
               required
             />
             {!cnpjValido && <span className="error-text">CNPJ inválido!</span>}
+            {error && <span className="error-text">{error}</span>}
           </div>
 
-          {/* Outros campos preenchidos automaticamente pela API */}
           <div className="form-group">
             <label htmlFor="razaoSocial">Razão Social</label>
             <input
@@ -134,23 +122,22 @@ const Cadastro: React.FC = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="telefone">Telefone</label>
-            <input
-              type="text"
-              id="telefone"
-              name="telefone"
-              value={formData.telefone}
+            <label htmlFor="tipoEmpresa">Tipo de Empresa</label>
+            <select
+              id="tipoEmpresa"
+              name="tipoEmpresa"
+              value={formData.tipoEmpresa}
               onChange={handleChange}
               required
-            />
+            >
+              <option value="comprador">Comprador</option>
+              <option value="fornecedor">Fornecedor</option>
+            </select>
           </div>
 
-          <button type="submit" className="cadastro-button" disabled={loading}>
-            {loading ? 'Cadastrando...' : 'Registrar'}
+          <button type="submit" className="cadastro-button">
+            Registrar
           </button>
-
-          {error && <span className="error-text">{error}</span>}
-          {success && <span className="success-text">Empresa cadastrada com sucesso!</span>}
         </form>
       </div>
     </div>
