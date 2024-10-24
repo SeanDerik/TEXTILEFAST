@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import '../styles/Cadastro.css';
+import { useNavigate } from 'react-router-dom';
 import useValidarCNPJ from '../hooks/ValidaCNPJ';
+import axios from 'axios';
 
 interface FormData {
   nome: string;
@@ -31,6 +33,7 @@ const Cadastro: React.FC = () => {
 
   const [cnpjValido, setCnpjValido] = useState(true);
   const { validarCNPJ, buscarDadosCNPJ, error } = useValidarCNPJ();
+  const navigate = useNavigate();
 
   const handleCNPJBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
     const cnpj = e.target.value;
@@ -64,25 +67,27 @@ const Cadastro: React.FC = () => {
       alert('CNPJ inválido!');
       return;
     }
-
-    // Enviar formData para o backend
+    const dataToSubmit = {
+      cnpj: formData.cnpj,
+      razao_social: formData.razaoSocial,
+      nome_fantasia: formData.nomeFantasia,
+      tipo_empresa: formData.tipoEmpresa,
+      email: formData.email,
+      telefone: formData.telefone,
+      endereco: formData.endereco,
+    };    
     try {
-      const response = await fetch('http://localhost:3001/api/empresas/cadastro', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await axios.post('http://localhost:3001/api/empresas/cadastro', dataToSubmit);
 
-      const result = await response.json();
-      if (response.ok) {
+      if (response.status === 201) {
         alert('Empresa cadastrada com sucesso!');
+        navigate('/home')
       } else {
-        alert(`Erro ao cadastrar empresa: ${result.error}`);
+        alert(`Erro ao cadastrar empresa: ${response.data.error}`);
       }
     } catch (error) {
       console.error('Erro no cadastro:', error);
+      alert('Erro no cadastro.');
     }
   };
 

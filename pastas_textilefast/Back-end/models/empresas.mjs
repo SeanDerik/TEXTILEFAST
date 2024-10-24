@@ -4,7 +4,7 @@ import sequelize from '../config/database.js';
 const Empresas = sequelize.define('Empresas', {
     empresa_id: {
         type: DataTypes.INTEGER,
-        autoIncrement: true, // Permitir auto-incremento para chave primária
+        autoIncrement: true,
         primaryKey: true,
     },
     cnpj: {
