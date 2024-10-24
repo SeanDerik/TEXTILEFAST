@@ -67,6 +67,7 @@ const Cadastro: React.FC = () => {
       alert('CNPJ inválido!');
       return;
     }
+
     const dataToSubmit = {
       cnpj: formData.cnpj,
       razao_social: formData.razaoSocial,
@@ -76,12 +77,14 @@ const Cadastro: React.FC = () => {
       telefone: formData.telefone,
       endereco: formData.endereco,
     };    
+
     try {
       const response = await axios.post('http://localhost:3001/api/empresas/cadastro', dataToSubmit);
 
       if (response.status === 201) {
-        alert('Empresa cadastrada com sucesso!');
-        navigate('/home')
+        const senhaGerada = response.data.senhaGerada;
+        alert(`Empresa cadastrada com sucesso! A senha gerada é: ${senhaGerada}`);
+        navigate('/home');
       } else {
         alert(`Erro ao cadastrar empresa: ${response.data.error}`);
       }

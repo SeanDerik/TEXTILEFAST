@@ -39,6 +39,10 @@ const Empresas = sequelize.define('Empresas', {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
+    senha: {
+        type: DataTypes.STRING(45),
+        allowNull: false,
+    }
 }, {
     tableName: 'empresas',
     timestamps: false,
