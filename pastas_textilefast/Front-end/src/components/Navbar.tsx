@@ -5,11 +5,15 @@ import '../styles/Navbar.css';
 import { useNavigate } from 'react-router-dom';
 
 export function Navbar() {
-    const navigate = useNavigate();  // Substitui useHistory por useNavigate
+    const navigate = useNavigate();  // Para navegação
 
     const handleLogout = () => {
         localStorage.removeItem('userToken');
-        navigate('/login');  // Usa navigate ao invés de history.push
+        navigate('/login');  // Redireciona para login após logout
+    };
+
+    const goToProfile = () => {
+        navigate('/profile');  // Redireciona para a página de perfil
     };
 
     return (
@@ -19,6 +23,9 @@ export function Navbar() {
                 <div className="buttons">
                     <Homebutton />
                     <Catalogbutton />
+                    {/* Botão de Perfil */}
+                    <button className="profileButton" onClick={goToProfile}>Perfil</button>
+                    {/* Botão de Logout */}
                     <button className="logoutButton" onClick={handleLogout}>Logout</button>
                 </div>
             </nav>
