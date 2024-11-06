@@ -26,7 +26,7 @@ router.post('/cadastro', async (req, res) => {
       senhaGerada: senhaAleatoria, 
     });
   } catch (error) {
-    console.error('Erro ao cadastrar empresa:', error);
+    console.error('Erro ao cadastrar empresa Back-end:', error);
     return res.status(500).json({ error: 'Erro ao cadastrar empresa' });
   }
 });

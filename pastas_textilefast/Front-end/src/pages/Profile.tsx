@@ -1,5 +1,5 @@
 import Textilefastlogo from "../assets/textilefastlogo.png";
-import "../styles/Profile.css";  // Arquivo CSS específico para o perfil
+import "../styles/Profile.css";
 
 export function Profile() {
     return (

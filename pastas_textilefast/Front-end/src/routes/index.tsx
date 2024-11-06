@@ -1,7 +1,8 @@
 import { Home } from "../pages/Home";
 import { Paginaproduto } from "../pages/Paginaproduto";
 import { Catalogpage } from "../pages/Catalogpage";
-import Cadastro from "../pages/Cadastro";
+import Cadastro  from "../pages/Cadastro";
+import { Profile } from "../pages/Profile";
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
 
@@ -16,6 +17,7 @@ export function Approutes() {
                 <Route path="/cadastro" element={<Cadastro />} />
                 <Route path="/product-page" element={<Paginaproduto />} />
                 <Route path="/catalogpage" element={<Catalogpage />} />
+                <Route path="/profile" element={<Profile />} />
 
             </Routes>
         </>

@@ -9,9 +9,9 @@ dotenv.config();
 const app = express();
 
 app.use(cors());
-app.use(express.json()); // Adicione isto para que o body-parser funcione com JSON
+app.use(express.json());
 app.use('/api/cnpj', cnpjRoutes);
-app.use('/api/empresas', empresaRoutes); // nova rota
+app.use('/api/empresas', empresaRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
