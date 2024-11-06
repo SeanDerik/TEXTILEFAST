@@ -12,7 +12,7 @@
     padding: 20px;
     margin: 20px auto;
     max-width: 800px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: -5px 5px 10px rgba(0, 0, 0, 0.2); /* Adjusted box-shadow */
 }
 
 .profile-info h2, .profile-info p {
@@ -31,4 +31,10 @@
 
 .profile-edit .edit-button:hover {
     background-color: #45a049;
+}
+
+.profilestuff {
+    display: flex;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.226); /* No changes here */
+    border-radius: 6px;
 }
