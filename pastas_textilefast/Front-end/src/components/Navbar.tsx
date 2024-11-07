@@ -3,8 +3,9 @@ import { Catalogbutton } from "./Catalogbutton";
 import Textilefastlogo from "../assets/textilefastlogo.png";
 import '../styles/Navbar.css';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap-icons/font/bootstrap-icons.css';  // Para os ícones do Bootstrap
 
-export function Navbar() {
+export function Navbar({ cartItemsCount }) {
     const navigate = useNavigate();  // Para navegação
 
     const handleLogout = () => {
@@ -16,19 +17,30 @@ export function Navbar() {
         navigate('/profile');  // Redireciona para a página de perfil
     };
 
+    const goToCart = () => {
+        navigate('/cart');  // Redireciona para o carrinho de compras
+    };
+
     return (
-        <>
-            <img src={Textilefastlogo} width="20%" className="littlelogo" alt="Textile Fast Logo" />
-            <nav className="navbar">
-                <div className="buttons">
-                    <Homebutton />
-                    <Catalogbutton />
-                    {/* Botão de Perfil */}
-                    <button className="profileButton" onClick={goToProfile}>Perfil</button>
-                    {/* Botão de Logout */}
-                    <button className="logoutButton" onClick={handleLogout}>Logout</button>
+        <nav className="navbar">
+            <div className="navbar-left">
+                <img src={Textilefastlogo} className="logo" alt="Textile Fast Logo" />
+            </div>
+            <div className="navbar-center">
+                <Homebutton className="button" />
+                <Catalogbutton className="button" />
+                <button className="button" onClick={goToProfile}>Perfil</button>
+            </div>
+            <div className="navbar-right">
+                {/* Ícone de Carrinho de Compras */}
+                <div className="cartButton" onClick={goToCart}>
+                    <i className="bi bi-cart4"></i>
+                    {cartItemsCount > 0 && (
+                        <span className="badge">{cartItemsCount}</span>
+                    )}
                 </div>
-            </nav>
-        </>
+                <button className="button logoutButton" onClick={handleLogout}>Logout</button>
+            </div>
+        </nav>
     );
 }
