@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "target": "esnext",  // Or "es2021" depending on your needs
+    "lib": ["esnext", "dom"],  // Use "esnext" and "dom" for modern features
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true
+  },
+  "include": ["vite.config.ts"]
+}

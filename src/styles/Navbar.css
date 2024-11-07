@@ -1,0 +1,39 @@
+.navbar {    
+    flex-direction: row;
+    align-items: center;
+    background-color: rgb(238, 19, 56);
+    width: 100%;
+    
+}
+
+.button {
+    width: fit-content;
+    height: 50px;
+    border: none;         
+    border-radius: 0;
+    font-size: 20px;           
+    cursor: pointer;          
+    text-align: center;        
+    text-decoration: none;     
+    outline: none;    
+    color: white;
+    background-color: rgb(238, 19, 56);
+    color: rgb(255, 255, 255);
+}
+.button:hover {
+    width: fit-content;
+    height: 50px;
+    border: none;         
+    border-radius: 0;
+    font-size: 20px;           
+    cursor: pointer;          
+    text-align: center;        
+    text-decoration: none;     
+    outline: none;    
+    color: white;
+    background-color: rgb(255, 255, 255);
+    color: rgb(238, 19, 56);
+}
+.button:focus {
+    outline: none;
+}
