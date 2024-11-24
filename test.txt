@@ -1,0 +1,160 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import cnpjRoutes from './routes/cnpjRoutes.mjs';
+import empresaRoutes from './routes/cadastroEmpresa.mjs';
+import carrinhoRoutes from './routes/carrinhoRoute.mjs'; // Correct route import
+
+dotenv.config();
+
+const app = express();
+
+// Middlewares
+app.use(cors());
+app.use(express.json());  // Enable JSON body parsing
+
+// Routes
+app.use('/api/cnpj', cnpjRoutes);
+app.use('/api/empresas', empresaRoutes);
+app.use('/api/carrinho', carrinhoRoutes);  // Ensure this matches the route in `carrinhoRoute.mjs`
+
+// Start server
+const PORT = process.env.PORT || 3001;
+app.listen(PORT, () => {
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
+});
+
+import { useState } from 'react';
+import { Navbar } from "../components/Navbar";
+import Placeholderimg from "../assets/placeholder.jpg";
+import '../styles/Paginaproduto.css';
+import '../styles/Botaocomprar.css';
+import axios from 'axios'; // Import axios for sending HTTP requests
+
+export function Paginaproduto() {
+    // Replace with actual data retrieval logic
+    const [product, setProduct] = useState({
+        produto_id: 1, // This shouldn't appear in the browser
+        nome_produto: 'Example Product',
+        descricao: 'This is an example description of the product.',
+        preco: 50.00,
+        estoque: 100,
+        fornecedor_id: 10, // This shouldn't appear in the browser
+        categoria_id: 5, // This shouldn't appear in the browser
+        data_cadastro: '2024-11-16' // Optional: for internal use or display
+    });
+
+    // Define the quantity (you can update this based on user input or a fixed value)
+    const [quantidade, setQuantidade] = useState(1); // Default quantity is 1
+
+    // Function to send data to the database
+    const handleBuyClick = async () => {
+        try {
+            const comprador_id = 1;  // Replace with actual user ID (you can get this from session or state)
+    
+            const response = await axios.post('http://localhost:3001/api/carrinho', {
+                comprador_id,
+                produto_id: product.produto_id,
+                quantidade  // Send the quantity as part of the request
+            });
+
+            console.log('Product added to cart:', response.data);
+        } catch (error) {
+            console.error('Error adding product to the cart:', error);
+        }
+    };
+
+    return (
+        <>
+            <Navbar />
+            <div className="container">
+                <div className="placeholderimg">
+                    <img src={Placeholderimg} alt={product.nome_produto} />
+                </div>
+                <div className="informacoes">
+                    <h1>{product.nome_produto}</h1>
+                    <p>{product.descricao}</p>
+                    <h2>Preço: R$ {product.preco.toFixed(2)}</h2>
+                    <p>Estoque disponível: {product.estoque}</p>
+                    {/* produto_id, fornecedor_id, and categoria_id are used internally but not shown in the browser */}
+                </div>
+                <div className="quantity-selector">
+                    <label htmlFor="quantity">Quantidade:</label>
+                    <input 
+                        type="number" 
+                        id="quantity" 
+                        min="1" 
+                        max={product.estoque} 
+                        value={quantidade} 
+                        onChange={(e) => setQuantidade(Number(e.target.value))} 
+                    />
+                </div>
+                <button onClick={handleBuyClick} className='buy-button'>
+                    ADICIONAR AO CARRINHO
+                </button>
+            </div>
+        </>
+    );
+}
+
+export default Paginaproduto;
+
+import express from 'express';
+import mysql from 'mysql2'; // Import MySQL
+
+// Create a new router instance
+const router = express.Router();
+
+// Create a MySQL connection
+const connection = mysql.createConnection({
+    host: 'localhost', // Replace with your MySQL host
+    user: 'root', // Replace with your MySQL username
+    password: '', // Replace with your MySQL password
+    database: 'textilefast' // Replace with your database name
+});
+
+// POST /api/carrinho - Add product to cart
+router.post('/', (req, res) => {
+    const { comprador_id, produto_id, quantidade } = req.body;
+
+    // Check for required fields
+    if (!comprador_id || !produto_id || !quantidade) {
+        return res.status(400).json({ message: 'Missing required fields: comprador_id, produto_id, or quantidade.' });
+    }
+
+    // First, retrieve the carrinho_id for the buyer (comprador)
+    const getCarrinhoIdQuery = 'SELECT carrinho_id FROM carrinho WHERE comprador_id = ? ORDER BY data_criacao DESC LIMIT 1';
+
+    connection.execute(getCarrinhoIdQuery, [comprador_id], (err, results) => {
+        if (err) {
+            console.error('Error retrieving carrinho_id:', err);
+            return res.status(500).json({ message: 'Error retrieving cart.' });
+        }
+
+        if (results.length === 0) {
+            return res.status(404).json({ message: 'Cart not found for this buyer.' });
+        }
+
+        const carrinho_id = results[0].carrinho_id;
+
+        // SQL query to insert the product into the cart (itens_carrinho table)
+        const sql = `
+            INSERT INTO itens_carrinho (carrinho_id, produto_id, quantidade) 
+            VALUES (?, ?, ?)`;
+
+        connection.execute(sql, [carrinho_id, produto_id, quantidade], (err, result) => {
+            if (err) {
+                console.error('Error inserting product into cart:', err);
+                return res.status(500).json({ message: 'Error adding product to cart' });
+            }
+
+            // Return a success message with the itemCarrinhoId (id of the added item)
+            res.status(200).json({
+                message: 'Product added to cart successfully',
+                itemCarrinhoId: result.insertId
+            });
+        });
+    });
+});
+
+export default router;

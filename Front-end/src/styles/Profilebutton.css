@@ -1,0 +1,24 @@
+.profilebutton {
+    content: center;
+    position: absolute;
+    right: 0;
+    width: 60px;
+    height: auto;
+    height: 50px;  
+    font-size: 20px;         
+    text-align: center;
+    transition: all 0.3s ease;    
+}
+.profilebutton:hover {
+    content: center;
+    width: 100px;
+    height: auto;
+    height: 50px;
+    font-size: 20px;          
+    text-align: center;    
+}
+
+
+.profilepic {
+    width: 50px;
+}
