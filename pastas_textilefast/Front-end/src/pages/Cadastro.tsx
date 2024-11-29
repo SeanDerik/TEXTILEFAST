@@ -1,131 +1,191 @@
 import React, { useState } from 'react';
 import '../styles/Cadastro.css';
 import { useNavigate } from 'react-router-dom';
+import useValidarCNPJ from '../hooks/ValidaCNPJ';
 import axios from 'axios';
-import Textilefastlogo from "../assets/textilefastlogo.png";
 
 interface FormData {
   nome: string;
-  cnpj: string;
-  endereco: string;
-  cidade: string;
-  estado: string;
-  telefone: string;
-  tipo_empresa: string;
   email: string;
-  razao_social: string;
-  qualidade: string;
-  condicoesFinanceiras: string;
-  pontualidade: string;
-  prazoEntrega: string;
-  comentario: string;
+  senha: string;
+  confirmarSenha: string;
+  cnpj: string;
+  razaoSocial: string;
+  nomeFantasia: string;
+  tipoEmpresa: 'comprador' | 'fornecedor';
+  telefone: string;
+  endereco: string;
 }
 
-const CadastroFornecedor: React.FC = () => {
+const Cadastro: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     nome: '',
-    cnpj: '',
-    endereco: '',
-    cidade: '',
-    estado: '',
-    telefone: '',
-    tipo_empresa: '',
     email: '',
-    razao_social: '',
-    qualidade: '',
-    condicoesFinanceiras: '',
-    pontualidade: '',
-    prazoEntrega: '',
-    comentario: ''
+    senha: '',
+    confirmarSenha: '',
+    cnpj: '',
+    razaoSocial: '',
+    nomeFantasia: '',
+    tipoEmpresa: 'comprador', // Valor padrão
+    telefone: '',
+    endereco: '',
   });
 
-  const [tipoUsuario, setTipoUsuario] = useState('');
+  const [cnpjValido, setCnpjValido] = useState(true);
+  const { validarCNPJ, buscarDadosCNPJ, error } = useValidarCNPJ();
   const navigate = useNavigate();
 
-  const handleDropdownChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const { value } = event.target;
-    setTipoUsuario(value);
-    setFormData((prevData) => ({
-      ...prevData,
-      tipo_empresa: value
-    }));
+  const handleCNPJBlur = async (e: React.FocusEvent<HTMLInputElement>) => {
+    const cnpj = e.target.value;
+    if (validarCNPJ(cnpj)) {
+      setCnpjValido(true);
+      const data = await buscarDadosCNPJ(cnpj); // Buscar dados do CNPJ pela API
+      if (data) {
+        setFormData({
+          ...formData,
+          razaoSocial: data.nome,
+          nomeFantasia: data.fantasia,
+          telefone: data.telefone,
+          endereco: `${data.logradouro}, ${data.municipio} - ${data.uf}`,
+        });
+      }
+    } else {
+      setCnpjValido(false);
+    }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!cnpjValido) {
+      alert('CNPJ inválido!');
+      return;
+    }
+
+    const dataToSubmit = {
+      cnpj: formData.cnpj,
+      razao_social: formData.razaoSocial,
+      nome_fantasia: formData.nomeFantasia,
+      tipo_empresa: formData.tipoEmpresa,
+      email: formData.email,
+      telefone: formData.telefone,
+      endereco: formData.endereco,
+    };    
 
     try {
-      const response = await axios.post('http://localhost:3001/api/empresas/cadastro', formData);
+      const response = await axios.post('http://localhost:3001/api/empresas/cadastro', dataToSubmit);
 
       if (response.status === 201) {
-        console.log('Empresa cadastrado com sucesso:', response.data);
-        navigate('/dashboard');
+        const senhaGerada = response.data.senhaGerada;
+        alert(`Empresa cadastrada com sucesso! A senha gerada é: ${senhaGerada}`);
+        navigate('/home');
+      } else {
+        alert(`Erro ao cadastrar empresa: ${response.data.error}`);
       }
     } catch (error) {
-      console.error('Erro ao cadastrar o Empresa Front-end:', error);
+      console.error('Erro no cadastro:', error);
+      alert('Erro no cadastro.');
     }
   };
 
   return (
-    <>
-    <img src={Textilefastlogo} width="20%" className="littlelogo" alt="Textile Fast Logo" />
     <div className="cadastro-container">
-      <h2>Cadastro de Fornecedor</h2>
-      <form onSubmit={handleSubmit}>
-        <label>Nome:
-          <input type="text" name="nome" value={formData.nome} onChange={handleChange} required />
-        </label>
+      <header className="header">
+        <h1>Textilefast</h1>
+      </header>
+      <div className="cadastro-content">
+        <h2>Cadastro</h2>
+        <form onSubmit={handleSubmit} className="cadastro-form">
+          <div className="form-group">
+            <label htmlFor="cnpj">CNPJ</label>
+            <input
+              type="text"
+              id="cnpj"
+              name="cnpj"
+              value={formData.cnpj}
+              onChange={handleChange}
+              onBlur={handleCNPJBlur}
+              required
+            />
+            {!cnpjValido && <span className="error-text">CNPJ inválido!</span>}
+            {error && <span className="error-text">{error}</span>}
+          </div>
 
-        <label>CNPJ:
-          <input type="text" name="cnpj" value={formData.cnpj} onChange={handleChange} required />
-        </label>
+          <div className="form-group">
+            <label htmlFor="razaoSocial">Razão Social</label>
+            <input
+              type="text"
+              id="razaoSocial"
+              name="razaoSocial"
+              value={formData.razaoSocial}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <label>Endereço:
-          <input type="text" name="endereco" value={formData.endereco} onChange={handleChange} required />
-        </label>
+          <div className="form-group">
+            <label htmlFor="NomeFantasia">Nome Fantasia</label>
+            <input
+              type="text"
+              id="nomeFantasia"
+              name="nomeFantasia"
+              value={formData.nomeFantasia}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <label>Cidade:
-          <input type="text" name="cidade" value={formData.cidade} onChange={handleChange} required />
-        </label>
+          <div className="form-group">
+            <label htmlFor="Email">Email</label>
+            <input
+              type="string"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <label>Razão Social:
-          <input type="text" name="razao_social" value={formData.razao_social} onChange={handleChange} required />
-        </label>
+          <div className="form-group">
+            <label htmlFor="Senha">Senha</label>
+            <input
+              type="string"
+              id="senha"
+              name="senha"
+              value={formData.senha}
+              onChange={handleChange}
+              required
+            />
+          </div>
 
-        <label>Estado:
-          <input type="text" name="estado" value={formData.estado} onChange={handleChange} required />
-        </label>
+          <div className="form-group">
+            <label htmlFor="tipoEmpresa">Tipo de Empresa</label>
+            <select
+              id="tipoEmpresa"
+              name="tipoEmpresa"
+              value={formData.tipoEmpresa}
+              onChange={handleChange}
+              required
+            >
+              <option value="comprador">Comprador</option>
+              <option value="fornecedor">Fornecedor</option>
+            </select>
+          </div>
 
-        <label>Telefone:
-          <input type="tel" name="telefone" value={formData.telefone} onChange={handleChange} required />
-        </label>
-
-        <label>Email:
-          <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-        </label>
-
-        <label>Tipo de Usuário:
-          <select name="tipo_empresa" value={tipoUsuario} onChange={handleDropdownChange} required>
-            <option value="">Selecione</option>
-            <option value="comprador">Comprador</option>
-            <option value="fornecedor">Fornecedor</option>
-          </select>
-        </label>
-
-        <p>Tipo selecionado: {tipoUsuario}</p>
-        <button type="submit">Cadastrar Fornecedor</button>
-      </form>
+          <button type="submit" className="cadastro-button">
+            Registrar
+          </button>
+        </form>
+      </div>
     </div>
-    </>
   );
 };
 
-export default CadastroFornecedor;
+export default Cadastro;

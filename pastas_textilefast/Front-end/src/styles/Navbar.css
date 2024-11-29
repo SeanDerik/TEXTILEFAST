@@ -1,87 +1,40 @@
-.navbar {
-    display: flex;
-    justify-content: space-between; /* Distribui o conteúdo de maneira uniforme entre a esquerda e a direita */
-    align-items: center; /* Centraliza os itens verticalmente */
-    background-color: rgb(238, 19, 56);
-    width: 100%;
-    padding: 10px 20px;
-}
-
-.navbar-left img {
-    width: 150px;
-    height: auto;
-}
-
-.navbar-center {
-    display: flex;
-    justify-content: center;
+.navbar {    
+    flex-direction: row;
     align-items: center;
-}
-
-.navbar-right {
-    display: flex;
-    align-items: center; /* Centraliza o carrinho e o botão de logout verticalmente */
+    background-color: rgb(238, 19, 56);
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    
 }
 
 .button {
     width: fit-content;
-    padding: 10px 20px;
+    height: 50px;
     border: none;         
-    border-radius: 5px;
-    font-size: 18px;           
+    border-radius: 0;
+    font-size: 20px;           
     cursor: pointer;          
     text-align: center;        
     text-decoration: none;     
     outline: none;    
     color: white;
     background-color: rgb(238, 19, 56);
-    margin: 0 10px;
+    color: rgb(255, 255, 255);
 }
-
 .button:hover {
+    width: fit-content;
+    height: 50px;
+    border: none;         
+    border-radius: 0;
+    font-size: 20px;           
+    cursor: pointer;          
+    text-align: center;        
+    text-decoration: none;     
+    outline: none;    
+    color: white;
     background-color: rgb(255, 255, 255);
     color: rgb(238, 19, 56);
 }
-
 .button:focus {
     outline: none;
-}
-
-/* Botão de Carrinho */
-.cartButton {
-    position: relative;
-    font-size: 22px;
-    color: white;
-    margin-right: 20px;
-    cursor: pointer;
-}
-
-.cartButton:hover {
-    color: white;
-}
-
-.cartButton .badge {
-    position: absolute;
-    top: -5px;
-    right: -10px;
-    font-size: 0.75rem;
-    padding: 0.25em 0.5em;
-    border-radius: 50%;
-    background-color: rgb(255, 0, 0); /* Vermelho para o badge */
-    color: white;
-}
-
-/* Estilo para o botão de Logout */
-.logoutButton {
-    background-color: rgb(238, 19, 56);
-    color: white;
-    padding: 10px 20px;
-    font-size: 18px;
-    cursor: pointer;
-    border: none;
-}
-
-.logoutButton:hover {
-    background-color: white;
-    color: rgb(238, 19, 56);
 }
