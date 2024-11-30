@@ -7,11 +7,11 @@ import axios from 'axios';
 interface FormData {
   nome: string;
   email: string;
-  senha: string;
   confirmarSenha: string;
   cnpj: string;
   razaoSocial: string;
   nomeFantasia: string;
+  reclameaqui: string;
   tipoEmpresa: 'comprador' | 'fornecedor';
   telefone: string;
   endereco: string;
@@ -21,11 +21,11 @@ const Cadastro: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     nome: '',
     email: '',
-    senha: '',
     confirmarSenha: '',
     cnpj: '',
     razaoSocial: '',
     nomeFantasia: '',
+    reclameaqui: '',
     tipoEmpresa: 'comprador', // Valor padrão
     telefone: '',
     endereco: '',
@@ -154,12 +154,12 @@ const Cadastro: React.FC = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="Senha">Senha</label>
+            <label htmlFor="Reclameaqui">Reclameaqui</label>
             <input
               type="string"
-              id="senha"
-              name="senha"
-              value={formData.senha}
+              id="reclameaqui"
+              name="reclameaqui"
+              value={formData.reclameaqui}
               onChange={handleChange}
               required
             />
