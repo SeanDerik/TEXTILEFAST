@@ -4,14 +4,15 @@ import { Catalogpage } from "../pages/Catalogpage";
 import Cadastro from "../pages/Cadastro";
 import { Loginpage } from "../pages/Loginpage";
 import Loginformpage from "../pages/Loginformpage";
-import { Profilepage } from "../pages/Profilepage";
+import  Profilepage  from "../pages/Profilepage"; // Corrected import
 import { Carrinho } from "../pages/Carrinho";
 
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
 
 export function Approutes() {
-    return (<>
+    return (
+        <>
             <link 
                 href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" 
                 rel="stylesheet" 
@@ -25,7 +26,6 @@ export function Approutes() {
                 <Route path="/loginform" element={<Loginformpage />} />
                 <Route path="/profile" element={<Profilepage />} />
                 <Route path="/carrinho" element={<Carrinho />} />
-
             </Routes>
         </>
     );

@@ -3,10 +3,10 @@ import '../styles/Profilebutton.css';
 import profilepic from "../assets/profilepic.png";
 
 export function Profilebutton() {
-    const navigate = useNavigate(); // Hook to navigate between routes
+    const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/profile'); // Navigate to the "/home" route when clicked
+        navigate('/profile');
     };
 
     return (

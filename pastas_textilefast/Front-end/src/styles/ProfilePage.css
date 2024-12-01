@@ -23,23 +23,12 @@ h2 {
   color: #FF0048;
 }
 
-.form-group {
-  margin-bottom: 15px;
-}
-
-label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 5px;
-  color: #333;
-}
-
-input {
-  width: 100%;
+p {
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 15px;
+  background-color: #f0f0f0; /* Fundo cinza claro */
 }
 
 button {
@@ -61,5 +50,4 @@ button:hover {
 .error-message {
   color: red;
   text-align: center;
-  margin-top: 10px;
 }

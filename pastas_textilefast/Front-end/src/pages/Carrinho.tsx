@@ -1,12 +1,10 @@
-import { Navbar } from "../components/Navbar";
-import "../styles/Profile.css";  // Arquivo CSS específico para o perfil
-import Cartpage from "./Cartpage";
+//import FormCarrinho from "../components/FormCarrinho";
+import "../styles/Profile.css";
 
 export function Carrinho() {
     return (
         <>
-          <Navbar />
-          <Cartpage />
+          < FormCarrinho />
         </>
     );
 }

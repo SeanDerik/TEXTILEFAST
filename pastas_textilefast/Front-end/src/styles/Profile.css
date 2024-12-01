@@ -1,32 +1,34 @@
-/* Profile.css */
-body {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
-    background-color: #ffffff; /* White background */
-  }
-  
-  .profile-container {
-    margin: 20px; /* Spacing from the top and left */
-  }
-  
-  .profile-card {
-    background-color: #ffffff; /* White container */
-    color: #000000; /* Black text */
+.profile-container {
+    text-align: center;
     padding: 20px;
-    border-radius: 10px;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    max-width: 90%; /* Wide container that adapts to screen size */
-    min-width: 600px; /* Minimum width for consistent layout */
-    text-align: left; /* Align text to the left */
-    margin: 0 auto; /* Center the container horizontally if the screen is wide enough */
-  }
-  
-  .profile-card p {
-    font-size: 1rem;
+}
+
+.profile-card {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-info h2, .profile-info p {
     margin: 10px 0;
-    line-height: 1.5;
-    word-wrap: break-word; /* Wrap long text */
-  }
-  
+}
+
+.profile-edit .edit-button {
+    background-color: #4CAF50; /* Verde */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.profile-edit .edit-button:hover {
+    background-color: #45a049;
+}

@@ -1,3 +1,95 @@
-body {
-    font-family: 'Poppins', sans-serif;
-}
+/* Container principal do formulário de login */
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #fff;
+  }
+  
+  /* Estilo para o logo */
+  .logo-container {
+    margin-bottom: 20px;
+  }
+  
+  .logo {
+    width: 100px;
+    height: auto;
+  }
+  
+  /* Estilo do formulário de login */
+  .login-form {
+    max-width: 400px;
+    width: 100%;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Estilo dos labels dos campos de entrada */
+  .login-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #333;
+  }
+  
+  /* Estilo dos inputs de texto e senha */
+  .login-form input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+  }
+  
+  /* Estilo do botão de login */
+  .login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #FF0048;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Efeito ao passar o mouse sobre o botão de login */
+  .login-button:hover {
+    background-color: #E60040;
+  }
+  
+  /* Estilo do botão de criar conta */
+  .create-account-button {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Efeito ao passar o mouse sobre o botão de criar conta */
+  .create-account-button:hover {
+    background-color: #999;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 480px) {
+    .login-form {
+      padding: 15px;
+    }
+  
+    .login-button, .create-account-button {
+      padding: 10px;
+    }
+  }
+  

@@ -32,6 +32,7 @@ const Cadastro: React.FC = () => {
   });
 
   const [cnpjValido, setCnpjValido] = useState(true);
+  const [senhaValida, setSenhaValida] = useState(true); // State to track password validation
   const { validarCNPJ, buscarDadosCNPJ, error } = useValidarCNPJ();
   const navigate = useNavigate();
 
@@ -61,10 +62,22 @@ const Cadastro: React.FC = () => {
     });
   };
 
+  const handlePasswordValidation = () => {
+    if (formData.senha !== formData.confirmarSenha) {
+      setSenhaValida(false);
+    } else {
+      setSenhaValida(true);
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!cnpjValido) {
       alert('CNPJ inválido!');
+      return;
+    }
+    if (!senhaValida) {
+      alert('As senhas não coincidem!');
       return;
     }
 
@@ -76,15 +89,14 @@ const Cadastro: React.FC = () => {
       email: formData.email,
       telefone: formData.telefone,
       endereco: formData.endereco,
-    };    
+      senha: formData.senha,
+    };
 
     try {
       const response = await axios.post('http://localhost:3001/api/empresas/cadastro', dataToSubmit);
 
       if (response.status === 201) {
-        const senhaGerada = response.data.senhaGerada;
-        alert(`Empresa cadastrada com sucesso! A senha gerada é: ${senhaGerada}`);
-        navigate('/home');
+        navigate('/loginform');
       } else {
         alert(`Erro ao cadastrar empresa: ${response.data.error}`);
       }
@@ -130,42 +142,6 @@ const Cadastro: React.FC = () => {
           </div>
 
           <div className="form-group">
-            <label htmlFor="NomeFantasia">Nome Fantasia</label>
-            <input
-              type="text"
-              id="nomeFantasia"
-              name="nomeFantasia"
-              value={formData.nomeFantasia}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="Email">Email</label>
-            <input
-              type="string"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
-            <label htmlFor="Senha">Senha</label>
-            <input
-              type="string"
-              id="senha"
-              name="senha"
-              value={formData.senha}
-              onChange={handleChange}
-              required
-            />
-          </div>
-
-          <div className="form-group">
             <label htmlFor="tipoEmpresa">Tipo de Empresa</label>
             <select
               id="tipoEmpresa"
@@ -177,6 +153,33 @@ const Cadastro: React.FC = () => {
               <option value="comprador">Comprador</option>
               <option value="fornecedor">Fornecedor</option>
             </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="senha">Senha</label>
+            <input
+              type="password"
+              id="senha"
+              name="senha"
+              value={formData.senha}
+              onChange={handleChange}
+              onBlur={handlePasswordValidation}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="confirmarSenha">Confirmar Senha</label>
+            <input
+              type="password"
+              id="confirmarSenha"
+              name="confirmarSenha"
+              value={formData.confirmarSenha}
+              onChange={handleChange}
+              onBlur={handlePasswordValidation}
+              required
+            />
+            {!senhaValida && <span className="error-text">As senhas não coincidem!</span>}
           </div>
 
           <button type="submit" className="cadastro-button">

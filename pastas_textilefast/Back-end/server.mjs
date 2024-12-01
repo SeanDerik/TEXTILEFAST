@@ -3,29 +3,23 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import cnpjRoutes from './routes/cnpjRoutes.mjs';
 import empresaRoutes from './routes/cadastroEmpresa.mjs';
-import carrinhoRoutes from './routes/carrinhoRoute.mjs'; // Correct route import
+import loginRoutes from './routes/loginRoute.mjs'; 
+import carrinhoRoute from './routes/carrinhoRoute.mjs';
+import profile from './routes/profileRoute.mjs';
+import verifyToken from './utils/authMiddleware.js';
 
 dotenv.config();
 
 const app = express();
 
-// Log every incoming request (for debugging)
-app.use((req, res, next) => {
-  console.log(`Incoming request: ${req.method} ${req.url}`);
-  next();  // Move to the next middleware/route handler
-});
+app.use(cors());
+app.use(express.json());
 
-// Middlewares
-app.use(cors({
-  origin: 'http://localhost:5173'
-}));
-app.use(express.json());  // Enable JSON body parsing
-
-// Routes
 app.use('/api/cnpj', cnpjRoutes);
 app.use('/api/empresas', empresaRoutes);
-app.use('/api/carrinho', carrinhoRoutes);
-// Start server
+app.use('/api', loginRoutes);
+app.use('/api/carrinho', carrinhoRoute);
+app.use('/api/dataProfile', verifyToken, profile);
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

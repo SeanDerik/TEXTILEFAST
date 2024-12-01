@@ -1,29 +1,24 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js'; // Ensure this path points to your database configuration
 
 const Carrinho = sequelize.define('Carrinho', {
-    
     carrinho_id: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
+        allowNull: false,
         primaryKey: true,
     },
-    
     comprador_id: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        allowNull: false,
     },
-    
     data_criacao: {
-        type: DataTypes.TIMESTAMP,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        type: DataTypes.DATE, // Use DATE instead of TIMESTAMP for Sequelize compatibility
+        allowNull: false,
+        defaultValue: DataTypes.NOW, // Set default to current timestamp if needed
     },
-    
-},{
-    tableName: 'carrinho', 
-    timestamps: false
+}, {
+    tableName: 'carrinho',
+    timestamps: false,
 });
 
-module.exports = Carrinho;
+export default Carrinho;

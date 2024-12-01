@@ -28,7 +28,7 @@ const Empresas = sequelize.define('Empresas', {
         allowNull: false,
     },
     telefone: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.STRING(255),
         allowNull: true,
     },
     endereco: {
@@ -46,7 +46,8 @@ const Empresas = sequelize.define('Empresas', {
     reclameaqui: {
         type: DataTypes.STRING(100),
         allowNull: true,
-    }
+    },
+
 }, {
     tableName: 'empresas',
     timestamps: false,

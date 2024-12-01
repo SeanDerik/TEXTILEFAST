@@ -1,72 +1,67 @@
 import React, { useState } from 'react';
-import '../styles/Login.css';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [senha, setSenha] = useState('');
-  const [error, setError] = useState('');
+const Loginform: React.FC = () => {
+  const [cnpj, setCnpj] = useState('');
+  const [password, setPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setError(''); // Clear any previous error messages
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:3001/api/empresas/login', { email, senha });
-    
-      if (response.data.success) {
-        const empresa = response.data.empresa; // Get empresa data
-        localStorage.setItem('empresa', JSON.stringify(empresa)); // Save to localStorage
-        alert('Login realizado com sucesso!');
-        navigate('/profile'); // Redirect to the profile page
+      const response = await axios.post('http://localhost:3001/api/login', {
+        cnpj,
+        senha: password,
+      });
+
+      const token = response.data.token;
+      localStorage.setItem('userToken', token);
+
+      console.log("Login bem-sucedido:", response.data);
+      navigate('/home');
+    } catch (error: any) {
+      if (error.response) {
+        setErrorMessage(error.response.data.error || 'Erro no login');
+      } else {
+        setErrorMessage('Erro ao conectar ao servidor');
+      }
     }
-    
-    } catch (err) {
-      console.error('Erro durante login:', err);
-      setError('Erro no servidor. Tente novamente mais tarde.');
-    }    
   };
 
   return (
-    <div className="login-container">
-      <header className="header">
-        <h1>Textilefast</h1>
-      </header>
-      <div className="login-content">
+    <div className="login-form-container">
+      <form onSubmit={handleLogin} className="login-form">
         <h2>Login</h2>
-        <form onSubmit={handleSubmit} className="login-form">
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
+        <div className="form-group">
+          <label>
+            CNPJ:
             <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type="text"
+              value={cnpj}
+              onChange={(e) => setCnpj(e.target.value)}
               required
             />
-            <label htmlFor="senha">Senha</label>
+          </label>
+        </div>
+        <div className="form-group">
+          <label>
+            Senha:
             <input
-              type="senha"
-              id="senha"
-              name="senha"
-              value={senha}
-              onChange={(e) => setSenha(e.target.value)}
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-          </div>
-
-          {error && <p className="error-text">{error}</p>}
-
-          <button type="submit" className="login-button">
-            Entrar
-          </button>
-        </form>
-      </div>
+          </label>
+        </div>
+        <button type="submit">Login</button>
+        {errorMessage && <p className="error-message">{errorMessage}</p>}
+      </form>
     </div>
   );
 };
 
-export default Login;
+export default Loginform;
