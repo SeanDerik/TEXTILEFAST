@@ -1,0 +1,11 @@
+INSERT INTO categorias (categoria_id, nome_categoria, descricao) VALUES
+(1, 'Tecidos Naturais', 'Categorias de tecidos feitos a partir de fibras naturais, como algodão, linho e seda.'),
+(2, 'Tecidos Sintéticos', 'Categorias de tecidos feitos a partir de materiais sintéticos como poliéster, nylon e acrílico.'),
+(3, 'Malhas', 'Tecidos de malha para vestuário e moda, como camisetas, vestidos e roupas casuais.'),
+(4, 'Tecidos para Decoração', 'Tecidos usados para decoração, como cortinas, almofadas, tapetes e outros acessórios.'),
+(5, 'Tecidos Esportivos', 'Tecidos especiais para roupas esportivas, como tecidos com tecnologias de secagem rápida e alta respirabilidade.'),
+(6, 'Tecidos Infantis', 'Tecidos desenvolvidos especialmente para roupas infantis, com estampas e texturas mais suaves.'),
+(7, 'Roupas de Cama, Mesa e Banho', 'Categorias de tecidos e produtos têxteis voltados para roupas de cama, mesa e banho, como toalhas, lençóis e cobertores.'),
+(8, 'Tecidos para Moda Feminina', 'Tecidos voltados para a produção de roupas femininas, como vestidos, blusas e saias.'),
+(9, 'Tecidos para Moda Masculina', 'Tecidos voltados para a produção de roupas masculinas, como camisas, calças e ternos.'),
+(10, 'Acessórios de Moda', 'Tecidos e materiais utilizados para a criação de acessórios de moda, como bolsas, cintos e chapéus.');

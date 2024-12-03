@@ -4,8 +4,9 @@ import { Catalogpage } from "../pages/Catalogpage";
 import Cadastro from "../pages/Cadastro";
 import { Loginpage } from "../pages/Loginpage";
 import Loginformpage from "../pages/Loginformpage";
-import  Profilepage  from "../pages/Profilepage"; // Corrected import
+import Profilepage from "../pages/Profilepage"; // Corrected import
 import { Carrinho } from "../pages/Carrinho";
+import AdicionarProduto from "../pages/adicionarProdutos";
 
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
@@ -13,9 +14,9 @@ import '../styles/index.css';
 export function Approutes() {
     return (
         <>
-            <link 
-                href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" 
-                rel="stylesheet" 
+            <link
+                href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+                rel="stylesheet"
             />
             <Routes>
                 <Route path="/home" element={<Home />} />
@@ -25,6 +26,7 @@ export function Approutes() {
                 <Route path="/" element={<Loginpage />} />
                 <Route path="/loginform" element={<Loginformpage />} />
                 <Route path="/profile" element={<Profilepage />} />
+                <Route path="/adicionar-produto" element={<AdicionarProduto />} />
                 <Route path="/carrinho" element={<Carrinho />} />
             </Routes>
         </>

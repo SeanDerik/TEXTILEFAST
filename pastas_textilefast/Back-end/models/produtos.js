@@ -1,59 +1,43 @@
-const { DataTypes } = require('sequelize');
-const sequelize = require('../config/database');
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/database.js';
 
 const Produtos = sequelize.define('Produtos', {
-    
     produto_id: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
+        allowNull: false,
         primaryKey: true,
     },
-    
     nome_produto: {
-        type: DataTypes.VARCHAR(255),
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        type: DataTypes.STRING(255),
+        allowNull: false,
     },
-    
     descricao: {
         type: DataTypes.TEXT,
-        allowNull: true, // Converte o valor booleano para string minúscula
-        
+        allowNull: true,
     },
-    
     preco: {
         type: DataTypes.DECIMAL(10, 2),
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        allowNull: false,
     },
-    
     estoque: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        allowNull: false,
     },
-    
     fornecedor_id: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        allowNull: false,
     },
-    
     categoria_id: {
         type: DataTypes.INTEGER,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        allowNull: false,
     },
-    
     data_cadastro: {
-        type: DataTypes.TIMESTAMP,
-        allowNull: false, // Converte o valor booleano para string minúscula
-        
+        type: DataTypes.DATE,
+        allowNull: false,
     },
-    
-},{
-    tableName: 'produtos', 
-    timestamps: false
+}, {
+    tableName: 'produtos',
+    timestamps: false,
 });
 
-module.exports = Produtos;
+export default Produtos;
