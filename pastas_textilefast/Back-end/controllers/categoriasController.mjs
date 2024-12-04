@@ -1,6 +1,5 @@
-import Categorias from '../models/Categorias.js';
+import Categorias from '../models/Categorias.mjs';
 
-// Função para obter todas as categorias
 export const getCategorias = async (req, res) => {
   try {
     const categorias = await Categorias.findAll();

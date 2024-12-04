@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
       const token = localStorage.getItem('userToken');
 
       if (!token) {
-        alert('Token não encontrado. Faça login.');
+        console.error('Token não encontrado. Faça login.');
         return;
       }
 
@@ -29,7 +29,6 @@ const Profile: React.FC = () => {
         setIsFornecedor(empresaData.tipo_empresa === 'fornecedor');
       } catch (err) {
         console.error('Erro ao carregar os dados da empresa:', err);
-        alert('Erro ao carregar os dados da empresa.');
       }
     };
 
@@ -49,7 +48,6 @@ const Profile: React.FC = () => {
           setProdutos(response.data);
         } catch (error) {
           console.error('Erro ao buscar produtos:', error);
-          alert('Erro ao buscar produtos.');
         }
       }
     };
@@ -68,11 +66,9 @@ const Profile: React.FC = () => {
         setProdutos((prevProdutos) =>
           prevProdutos.filter((produto) => produto.produto_id !== produto_id)
         );
-        alert('Produto excluído com sucesso!');
       }
     } catch (error) {
       console.error('Erro ao excluir produto:', error);
-      alert('Erro ao excluir produto.');
     }
   };
 
@@ -97,32 +93,36 @@ const Profile: React.FC = () => {
         )}
       </div>
 
-      {isFornecedor && produtos.length > 0 && (
+      {isFornecedor && (
         <div className="products-section">
           <h2>Produtos Cadastrados</h2>
-          <ul className="product-list">
-            {produtos.map((produto) => (
-              <li key={produto.produto_id} className="product-item">
-                <div>
-                  <h3>{produto.nome_produto}</h3>
-                  <p><strong>Descrição:</strong> {produto.descricao}</p>
-                  <p><strong>Preço:</strong> R$ {produto.preco.toFixed(2)}</p>
-                  <p><strong>Estoque:</strong> {produto.estoque}</p>
-                  <p><strong>Categoria ID:</strong> {produto.categoria_id}</p>
-                  <p><strong>Data de Cadastro:</strong> {new Date(produto.data_cadastro).toLocaleDateString()}</p>
-                </div>
-                <div className="product-actions">
-                  <button className="edit-button">Editar</button>
-                  <button
-                    className="delete-button"
-                    onClick={() => handleDelete(produto.produto_id)}
-                  >
-                    Excluir
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
+          {produtos.length > 0 ? (
+            <ul className="product-list">
+              {produtos.map((produto) => (
+                <li key={produto.produto_id} className="product-item">
+                  <div>
+                    <h3>{produto.nome_produto}</h3>
+                    <p><strong>Descrição:</strong> {produto.descricao}</p>
+                    <p><strong>Preço:</strong> R$ {produto.preco.toFixed(2)}</p>
+                    <p><strong>Estoque:</strong> {produto.estoque}</p>
+                    <p><strong>Categoria ID:</strong> {produto.categoria_id}</p>
+                    <p><strong>Data de Cadastro:</strong> {new Date(produto.data_cadastro).toLocaleDateString()}</p>
+                  </div>
+                  <div className="product-actions">
+                    <button className="edit-button">Editar</button>
+                    <button
+                      className="delete-button"
+                      onClick={() => handleDelete(produto.produto_id)}
+                    >
+                      Excluir
+                    </button>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Você ainda não tem produtos cadastrados.</p>
+          )}
         </div>
       )}
     </div>

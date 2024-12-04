@@ -1,30 +1,58 @@
-import Produtos from '../models/produtos.js';
+import Produtos from '../models/produtos.mjs';
+import path from 'path';
 
-// Listar todos os produtos de um fornecedor
-export const listarProdutos = async (req, res) => {
-  const { fornecedor_id } = req.params;
-
+export const obterTodosProdutos = async (req, res) => {
   try {
-    const produtos = await Produtos.findAll({ where: { fornecedor_id } });
-    return res.status(200).json(produtos);
+    const produtos = await Produtos.findAll();
+    return res.status(200).json({ produtos });
   } catch (error) {
-    console.error('Erro ao buscar produtos:', error);
-    return res.status(500).json({ error: 'Erro ao buscar produtos' });
+    console.error('Erro ao obter produtos:', error);
+    return res.status(500).json({ error: 'Erro ao obter produtos' });
   }
 };
 
-// Criar um novo produto
 export const criarProduto = async (req, res) => {
   const { nome_produto, descricao, preco, estoque, fornecedor_id, categoria_id } = req.body;
+  const imagem = req.file;
+  const fornecedorIdFromToken = req.empresa ? req.empresa.fornecedor_id : null;
+  const fornecedorId = fornecedor_id || fornecedorIdFromToken;
+
+  console.log('Fornecedor ID:', fornecedorId);
+
+  if (!req.body.fornecedor_id || req.body.fornecedor_id === 'undefined') {
+    return res.status(400).json({ error: 'Fornecedor ID is required' });
+  }
+  
+  console.log('Request Body:', req.body);
+  console.log('File:', req.file);
 
   try {
+    if (!nome_produto || !descricao || !preco || !estoque || !categoria_id) {
+      return res.status(400).json({ error: 'Todos os campos obrigatórios devem ser preenchidos' });
+    }
+    if (isNaN(preco) || isNaN(estoque)) {
+      return res.status(400).json({ error: 'Preço e Estoque devem ser números válidos' });
+    }
+
+    let imagemUrl = null;
+    if (imagem) {
+      const imagemPath = path.join('uploads', imagem.filename);
+      imagemUrl = `http://localhost:3001/${imagemPath}`;
+    }
+
+    const produtoExistente = await Produtos.findOne({ where: { nome_produto } });
+    if (produtoExistente) {
+      return res.status(409).json({ error: 'Produto já existe com esse nome' });
+    }
+
     const novoProduto = await Produtos.create({
       nome_produto,
       descricao,
       preco,
       estoque,
-      fornecedor_id,
+      fornecedor_id: fornecedorId,
       categoria_id,
+      imagem_url: imagemUrl,
       data_cadastro: new Date(),
     });
 
@@ -34,29 +62,36 @@ export const criarProduto = async (req, res) => {
     });
   } catch (error) {
     console.error('Erro ao criar produto:', error);
-    return res.status(500).json({ error: 'Erro ao criar produto' });
+    return res.status(500).json({ error: error.message || 'Erro ao criar produto' });
   }
 };
 
-// Atualizar um produto
 export const atualizarProduto = async (req, res) => {
-  const { produto_id } = req.params;
-  const { nome_produto, descricao, preco, estoque, categoria_id } = req.body;
+  const { id } = req.params;
+  const { nome_produto, descricao, preco, estoque, fornecedor_id, categoria_id } = req.body;
+  const imagem = req.file;
 
   try {
-    const produto = await Produtos.findByPk(produto_id);
-
+    const produto = await Produtos.findByPk(id);
     if (!produto) {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }
 
-    await produto.update({
-      nome_produto,
-      descricao,
-      preco,
-      estoque,
-      categoria_id,
-    });
+    let imagemUrl = produto.imagem_url;
+    if (imagem) {
+      const imagemPath = path.join('uploads', imagem.filename);
+      imagemUrl = imagemPath;
+    }
+
+    produto.nome_produto = nome_produto || produto.nome_produto;
+    produto.descricao = descricao || produto.descricao;
+    produto.preco = preco || produto.preco;
+    produto.estoque = estoque || produto.estoque;
+    produto.fornecedor_id = fornecedor_id || produto.fornecedor_id;
+    produto.categoria_id = categoria_id || produto.categoria_id;
+    produto.imagem_url = imagemUrl;
+
+    await produto.save();
 
     return res.status(200).json({
       message: 'Produto atualizado com sucesso!',
@@ -68,21 +103,31 @@ export const atualizarProduto = async (req, res) => {
   }
 };
 
-// Excluir um produto
 export const excluirProduto = async (req, res) => {
-  const { produto_id } = req.params;
+  const { id } = req.params;
 
   try {
-    const produto = await Produtos.findByPk(produto_id);
-
+    const produto = await Produtos.findByPk(id);
     if (!produto) {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }
-
     await produto.destroy();
-    return res.status(200).json({ message: 'Produto excluído com sucesso!' });
+
+    return res.status(200).json({
+      message: 'Produto excluído com sucesso!',
+    });
   } catch (error) {
     console.error('Erro ao excluir produto:', error);
     return res.status(500).json({ error: 'Erro ao excluir produto' });
+  }
+};
+
+export const listarProdutos = async (req, res) => {
+  try {
+    const produtos = await Produtos.findAll();
+    return res.status(200).json({ produtos });
+  } catch (error) {
+    console.error('Erro ao listar produtos:', error);
+    return res.status(500).json({ error: 'Erro ao listar produtos' });
   }
 };

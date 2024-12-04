@@ -7,9 +7,9 @@ import loginRoutes from './routes/loginRoute.mjs';
 import carrinhoRoute from './routes/carrinhoRoute.mjs';
 import profile from './routes/profileRoute.mjs';
 import verifyToken from './utils/authMiddleware.js';
-import produtosRoutes from './routes/produtosRoute.mjs';
+import produtosRoutes from './routes/produtosRoutes/produtosRouters.mjs';
 import categoriasRoutes from './routes/produtosRoutes/categoriasRoutes.mjs';
-import uploadRoutes from './routes/produtosRoutes/multerImgProduto.mjs';
+import { upload } from './utils/uploadConfig.mjs';
 
 dotenv.config();
 
@@ -23,9 +23,14 @@ app.use('/api/empresas', empresaRoutes);
 app.use('/api', loginRoutes);
 app.use('/api/carrinho', carrinhoRoute);
 app.use('/api/dataProfile', verifyToken, profile);
-app.use('/api', produtosRoutes);
-app.use('/api/categorias', categoriasRoutes); // Rota para categorias
-app.use('/api/upload', uploadRoutes); // Rota para upload de imagens
+app.use('/api/produtos', produtosRoutes);
+app.use('/api/categorias', categoriasRoutes);
+app.post('/api/upload', upload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
+  }
+  res.status(200).json({ message: 'Arquivo enviado com sucesso!', file: req.file });
+});
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {

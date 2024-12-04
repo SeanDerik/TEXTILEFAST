@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import '../styles/AddProduct.css';
 
 const AdicionarProduto: React.FC = () => {
-  const [nomeProduto, setNomeProduto] = useState('');
+  const [nome_Produto, setnome_Produto] = useState('');
   const [descricao, setDescricao] = useState('');
   const [preco, setPreco] = useState('');
   const [estoque, setEstoque] = useState('');
@@ -15,31 +16,27 @@ const AdicionarProduto: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Puxa as categorias do backend
-    axios.get('http://localhost:3001/api/categorias')
+    axios.get('http://localhost:3001/api/categorias/categorias')
       .then((response) => {
         setCategorias(response.data);
       })
       .catch((error) => {
-        console.error("Erro ao carregar categorias", error);
+        console.error('Erro ao carregar categorias', error);
       });
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!nomeProduto || !descricao || !preco || !estoque || !categoriaId || !imagem) {
+    if (!nome_Produto || !descricao || !preco || !estoque || !categoriaId || !imagem) {
       setErro('Preencha todos os campos');
       return;
     }
 
-    const formData = new FormData();
-    formData.append('nome_produto', nomeProduto);
-    formData.append('descricao', descricao);
-    formData.append('preco', preco);
-    formData.append('estoque', estoque);
-    formData.append('categoria_id', categoriaId);
-    formData.append('imagem', imagem);
+    if (isNaN(parseFloat(preco)) || isNaN(parseInt(estoque, 10))) {
+      setErro('Preço e Estoque devem ser números válidos');
+      return;
+    }
 
     const token = localStorage.getItem('userToken');
     if (!token) {
@@ -47,9 +44,33 @@ const AdicionarProduto: React.FC = () => {
       return;
     }
 
+    const decodedToken: any = jwtDecode(token);
+    console.log('Decoded Token:', decodedToken);  // Verifique o conteúdo do token
+    const fornecedor_id = decodedToken.empresa_id;
+
+    if (!fornecedor_id) {
+      setErro('Fornecedor ID não encontrado no token');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('nome_produto', nome_Produto);
+    formData.append('descricao', descricao);
+    formData.append('preco', parseFloat(preco).toString());
+    formData.append('estoque', parseInt(estoque, 10).toString());
+    formData.append('categoria_id', categoriaId);
+    formData.append('fornecedor_id', fornecedor_id);
+
+    if (imagem) {
+      formData.append('imagem', imagem);
+      console.log('Imagem adicionada ao FormData:', imagem);
+    } else {
+      console.log('Nenhuma imagem selecionada.');
+    }
+
     try {
       const response = await axios.post(
-        'http://localhost:3001/api/produtos',
+        'http://localhost:3001/api/produtos/produtos',
         formData,
         {
           headers: {
@@ -64,7 +85,7 @@ const AdicionarProduto: React.FC = () => {
         navigate('/profile');
       }
     } catch (error) {
-      console.error('Erro ao adicionar produto:', error);
+      console.error('Erro ao adicionar produto:', error.response ? error.response.data : error.message);
       setErro('Erro ao adicionar produto');
     }
   };
@@ -77,8 +98,8 @@ const AdicionarProduto: React.FC = () => {
           <label>Nome do Produto</label>
           <input
             type="text"
-            value={nomeProduto}
-            onChange={(e) => setNomeProduto(e.target.value)}
+            value={nome_Produto}
+            onChange={(e) => setnome_Produto(e.target.value)}
           />
         </div>
         <div>
@@ -122,7 +143,11 @@ const AdicionarProduto: React.FC = () => {
           <label>Imagem</label>
           <input
             type="file"
-            onChange={(e) => setImagem(e.target.files ? e.target.files[0] : null)}
+            onChange={(e) => {
+              const selectedFile = e.target.files ? e.target.files[0] : null;
+              setImagem(selectedFile);
+              console.log('Imagem selecionada:', selectedFile);
+            }}
           />
         </div>
         {erro && <p className="error">{erro}</p>}
