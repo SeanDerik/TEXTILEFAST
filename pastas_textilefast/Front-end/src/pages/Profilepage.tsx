@@ -250,7 +250,7 @@ const Profile: React.FC = () => {
                         {produto.imagem_url && (
                           <div>
                             <img
-                              src={`http://localhost:3001/uploads/${produto.imagem_url.replace('\\', '/')}`}
+                              src={`${produto.imagem_url.replace(/\\/g, '/')}`}
                               alt={`Imagem do produto ${produto.nome_produto}`}
                               style={{
                                 maxWidth: '100%',

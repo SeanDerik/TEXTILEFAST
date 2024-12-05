@@ -1,74 +1,3 @@
-CREATE TABLE `avaliacoes_fornecedores` (
-  `avaliacao_id` int NOT NULL AUTO_INCREMENT,
-  `comprador_id` int DEFAULT NULL,
-  `fornecedor_id` int DEFAULT NULL,
-  `qualidade` int DEFAULT NULL,
-  `condicoes_financeiras` int DEFAULT NULL,
-  `pontualidade` int DEFAULT NULL,
-  `prazo_entrega` int DEFAULT NULL,
-  `comentario` text,
-  `data_avaliacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`avaliacao_id`),
-  KEY `comprador_id` (`comprador_id`),
-  KEY `fornecedor_id` (`fornecedor_id`),
-  CONSTRAINT `avaliacoes_fornecedores_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE SET NULL,
-  CONSTRAINT `avaliacoes_fornecedores_ibfk_2` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
-  CONSTRAINT `avaliacoes_fornecedores_chk_1` CHECK ((`qualidade` between 1 and 5)),
-  CONSTRAINT `avaliacoes_fornecedores_chk_2` CHECK ((`condicoes_financeiras` between 1 and 5)),
-  CONSTRAINT `avaliacoes_fornecedores_chk_3` CHECK ((`pontualidade` between 1 and 5)),
-  CONSTRAINT `avaliacoes_fornecedores_chk_4` CHECK ((`prazo_entrega` between 1 and 5))
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `carrinho` (
-  `carrinho_id` int NOT NULL AUTO_INCREMENT,
-  `comprador_id` int NOT NULL,
-  `data_criacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`carrinho_id`),
-  KEY `comprador_id` (`comprador_id`),
-  CONSTRAINT `carrinho_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `categorias` (
-  `categoria_id` int NOT NULL AUTO_INCREMENT,
-  `nome_categoria` varchar(100) NOT NULL,
-  `descricao` text,
-  PRIMARY KEY (`categoria_id`),
-  UNIQUE KEY `nome_categoria` (`nome_categoria`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `configuracoes_empresa` (
-  `configuracao_id` int NOT NULL AUTO_INCREMENT,
-  `empresa_id` int NOT NULL,
-  `chave` varchar(100) NOT NULL,
-  `valor` text,
-  PRIMARY KEY (`configuracao_id`),
-  KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `configuracoes_empresa_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `configuracoes_seguranca` (
-  `seguranca_id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int NOT NULL,
-  `dois_fatores` tinyint(1) DEFAULT '0',
-  `pergunta_seguranca` varchar(255) DEFAULT NULL,
-  `resposta_seguranca` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`seguranca_id`),
-  KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `configuracoes_seguranca_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `documentos_fiscais` (
-  `documento_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `pedido_id` int DEFAULT NULL,
-  `numero_nota_fiscal` varchar(50) NOT NULL,
-  `caminho_documento` text,
-  `data_emissao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`documento_id`),
-  UNIQUE KEY `documento_id` (`documento_id`),
-  KEY `pedido_id` (`pedido_id`),
-  CONSTRAINT `documentos_fiscais_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
 CREATE TABLE `empresas` (
   `empresa_id` int NOT NULL AUTO_INCREMENT,
   `cnpj` varchar(14) NOT NULL,
@@ -84,142 +13,24 @@ CREATE TABLE `empresas` (
   PRIMARY KEY (`empresa_id`),
   UNIQUE KEY `cnpj` (`cnpj`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
-CREATE TABLE `enderecos` (
-  `endereco_id` int NOT NULL AUTO_INCREMENT,
-  `empresa_id` int NOT NULL,
-  `tipo` enum('comercial','entrega','faturamento') NOT NULL,
-  `endereco` text NOT NULL,
-  `cidade` varchar(100) NOT NULL,
-  `estado` varchar(100) NOT NULL,
-  `cep` varchar(10) NOT NULL,
-  `pais` varchar(100) NOT NULL,
-  PRIMARY KEY (`endereco_id`),
-  KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `enderecos_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `usuarios` (
+  `usuario_id` int NOT NULL AUTO_INCREMENT,
+  `nome` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL UNIQUE,
+  `senha` varchar(100) NOT NULL,
+  `data_criacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`usuario_id`)
+);
 
-CREATE TABLE `historico_precos` (
-  `historico_id` int NOT NULL AUTO_INCREMENT,
-  `produto_id` int NOT NULL,
-  `preco_anterior` decimal(10,2) NOT NULL,
-  `preco_novo` decimal(10,2) NOT NULL,
-  `data_alteracao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`historico_id`),
-  KEY `produto_id` (`produto_id`),
-  CONSTRAINT `historico_precos_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `imagens_produtos` (
-  `imagem_id` int NOT NULL AUTO_INCREMENT,
-  `produto_id` int NOT NULL,
-  `url_imagem` text NOT NULL,
+CREATE TABLE `categorias` (
+  `categoria_id` int NOT NULL AUTO_INCREMENT,
+  `nome_categoria` varchar(100) NOT NULL,
   `descricao` text,
-  `data_upload` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`imagem_id`),
-  KEY `produto_id` (`produto_id`),
-  CONSTRAINT `imagens_produtos_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `itens_carrinho` (
-  `item_carrinho_id` int NOT NULL AUTO_INCREMENT,
-  `carrinho_id` int NOT NULL,
-  `produto_id` int NOT NULL,
-  `quantidade` int NOT NULL,
-  `data_adicionado` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`item_carrinho_id`),
-  KEY `carrinho_id` (`carrinho_id`),
-  KEY `produto_id` (`produto_id`),
-  CONSTRAINT `itens_carrinho_ibfk_1` FOREIGN KEY (`carrinho_id`) REFERENCES `carrinho` (`carrinho_id`) ON DELETE CASCADE,
-  CONSTRAINT `itens_carrinho_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `itens_pedido` (
-  `item_id` int NOT NULL AUTO_INCREMENT,
-  `pedido_id` int DEFAULT NULL,
-  `produto_id` int DEFAULT NULL,
-  `quantidade` int NOT NULL,
-  `preco_unitario` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`item_id`),
-  KEY `pedido_id` (`pedido_id`),
-  KEY `produto_id` (`produto_id`),
-  CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE,
-  CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `logs_acesso` (
-  `log_id` int NOT NULL AUTO_INCREMENT,
-  `usuario_id` int DEFAULT NULL,
-  `acao` varchar(255) NOT NULL,
-  `detalhes` text,
-  `data_acesso` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`log_id`),
-  KEY `usuario_id` (`usuario_id`),
-  CONSTRAINT `logs_acesso_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `mensagens` (
-  `mensagem_id` int NOT NULL AUTO_INCREMENT,
-  `remetente_id` int NOT NULL,
-  `destinatario_id` int NOT NULL,
-  `conteudo` text NOT NULL,
-  `data_mensagem` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `lida` tinyint(1) DEFAULT '0',
-  PRIMARY KEY (`mensagem_id`),
-  KEY `remetente_id` (`remetente_id`),
-  KEY `destinatario_id` (`destinatario_id`),
-  CONSTRAINT `mensagens_ibfk_1` FOREIGN KEY (`remetente_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE,
-  CONSTRAINT `mensagens_ibfk_2` FOREIGN KEY (`destinatario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `notificacoes` (
-  `notificacao_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `empresa_id` int DEFAULT NULL,
-  `mensagem` text,
-  `lida` tinyint(1) DEFAULT '0',
-  `data_notificacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`notificacao_id`),
-  UNIQUE KEY `notificacao_id` (`notificacao_id`),
-  KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `notificacoes_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `pagamentos` (
-  `pagamento_id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `pedido_id` int DEFAULT NULL,
-  `valor_pago` decimal(10,2) NOT NULL,
-  `data_pagamento` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `metodo_pagamento` enum('boleto','cartao_credito','transferencia') NOT NULL,
-  PRIMARY KEY (`pagamento_id`),
-  UNIQUE KEY `pagamento_id` (`pagamento_id`),
-  KEY `pedido_id` (`pedido_id`),
-  CONSTRAINT `pagamentos_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `pedidos` (
-  `pedido_id` int NOT NULL AUTO_INCREMENT,
-  `comprador_id` int DEFAULT NULL,
-  `fornecedor_id` int DEFAULT NULL,
-  `total` decimal(10,2) NOT NULL,
-  `data_pedido` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('pendente','pago','enviado','concluido','cancelado') NOT NULL,
-  PRIMARY KEY (`pedido_id`),
-  KEY `comprador_id` (`comprador_id`),
-  KEY `fornecedor_id` (`fornecedor_id`),
-  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
-  CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-CREATE TABLE `preferencias_notificacao` (
-  `preferencia_id` int NOT NULL AUTO_INCREMENT,
-  `empresa_id` int NOT NULL,
-  `tipo_notificacao` enum('email','sms','in-app') NOT NULL,
-  `ativo` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`preferencia_id`),
-  KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `preferencias_notificacao_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  PRIMARY KEY (`categoria_id`),
+  UNIQUE KEY `nome_categoria` (`nome_categoria`)
+);
 
 CREATE TABLE `produtos` (
   `produto_id` int NOT NULL AUTO_INCREMENT,
@@ -233,24 +44,81 @@ CREATE TABLE `produtos` (
   `imagem_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`produto_id`),
   KEY `categoria_id` (`categoria_id`),
-  KEY `produtos_ibfk_1` (`fornecedor_id`),
+  KEY `fornecedor_id` (`fornecedor_id`),
   CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
   CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`categoria_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
-CREATE TABLE `promocoes` (
-  `promocao_id` int NOT NULL AUTO_INCREMENT,
-  `codigo` varchar(50) NOT NULL,
-  `descricao` text,
-  `desconto_percentual` decimal(5,2) DEFAULT NULL,
-  `desconto_valor` decimal(10,2) DEFAULT NULL,
-  `data_inicio` date NOT NULL,
-  `data_fim` date NOT NULL,
-  `quantidade_disponivel` int DEFAULT NULL,
-  `ativo` tinyint(1) DEFAULT '1',
-  PRIMARY KEY (`promocao_id`),
-  UNIQUE KEY `codigo` (`codigo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `carrinho` (
+  `carrinho_id` int NOT NULL AUTO_INCREMENT,
+  `comprador_id` int NOT NULL,
+  `data_criacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`carrinho_id`),
+  KEY `comprador_id` (`comprador_id`),
+  CONSTRAINT `carrinho_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `itens_carrinho` (
+  `item_carrinho_id` int NOT NULL AUTO_INCREMENT,
+  `carrinho_id` int NOT NULL,
+  `produto_id` int NOT NULL,
+  `quantidade` int NOT NULL,
+  `data_adicionado` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`item_carrinho_id`),
+  KEY `carrinho_id` (`carrinho_id`),
+  KEY `produto_id` (`produto_id`),
+  CONSTRAINT `itens_carrinho_ibfk_1` FOREIGN KEY (`carrinho_id`) REFERENCES `carrinho` (`carrinho_id`) ON DELETE CASCADE,
+  CONSTRAINT `itens_carrinho_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `pedidos` (
+  `pedido_id` int NOT NULL AUTO_INCREMENT,
+  `comprador_id` int DEFAULT NULL,
+  `fornecedor_id` int DEFAULT NULL,
+  `total` decimal(10,2) NOT NULL,
+  `data_pedido` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('pendente','pago','enviado','concluido','cancelado') NOT NULL,
+  PRIMARY KEY (`pedido_id`),
+  KEY `comprador_id` (`comprador_id`),
+  KEY `fornecedor_id` (`fornecedor_id`),
+  CONSTRAINT `pedidos_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
+  CONSTRAINT `pedidos_ibfk_2` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+);
+
+CREATE TABLE `itens_pedido` (
+  `item_id` int NOT NULL AUTO_INCREMENT,
+  `pedido_id` int DEFAULT NULL,
+  `produto_id` int DEFAULT NULL,
+  `quantidade` int NOT NULL,
+  `preco_unitario` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`item_id`),
+  KEY `pedido_id` (`pedido_id`),
+  KEY `produto_id` (`produto_id`),
+  CONSTRAINT `itens_pedido_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE,
+  CONSTRAINT `itens_pedido_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
+);
+
+
+CREATE TABLE `avaliacoes_fornecedores` (
+  `avaliacao_id` int NOT NULL AUTO_INCREMENT,
+  `comprador_id` int DEFAULT NULL,
+  `fornecedor_id` int DEFAULT NULL,
+  `qualidade` int DEFAULT NULL,
+  `condicoes_financeiras` int DEFAULT NULL,
+  `pontualidade` int DEFAULT NULL,
+  `prazo_entrega` int DEFAULT NULL,
+  `comentario` text,
+  `data_avaliacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`avaliacao_id`),
+  KEY `comprador_id` (`comprador_id`),
+  KEY `fornecedor_id` (`fornecedor_id`),
+  CONSTRAINT `avaliacoes_fornecedores_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE SET NULL,
+  CONSTRAINT `avaliacoes_fornecedores_ibfk_2` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
+  CONSTRAINT `avaliacoes_fornecedores_chk_1` CHECK ((`qualidade` BETWEEN 1 AND 5)),
+  CONSTRAINT `avaliacoes_fornecedores_chk_2` CHECK ((`condicoes_financeiras` BETWEEN 1 AND 5)),
+  CONSTRAINT `avaliacoes_fornecedores_chk_3` CHECK ((`pontualidade` BETWEEN 1 AND 5)),
+  CONSTRAINT `avaliacoes_fornecedores_chk_4` CHECK ((`prazo_entrega` BETWEEN 1 AND 5))
+);
 
 CREATE TABLE `reclamacoes_fornecedores` (
   `reclamacao_id` bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -260,43 +128,157 @@ CREATE TABLE `reclamacoes_fornecedores` (
   `status` enum('pendente','resolvida','fechada') DEFAULT 'pendente',
   `data_reclamacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`reclamacao_id`),
-  UNIQUE KEY `reclamacao_id` (`reclamacao_id`),
   KEY `comprador_id` (`comprador_id`),
   KEY `fornecedor_id` (`fornecedor_id`),
   CONSTRAINT `reclamacoes_fornecedores_ibfk_1` FOREIGN KEY (`comprador_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE SET NULL,
   CONSTRAINT `reclamacoes_fornecedores_ibfk_2` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+);
 
-CREATE TABLE `relatorios` (
-  `relatorio_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `logs_acesso` (
+  `log_id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int DEFAULT NULL,
+  `acao` varchar(255) NOT NULL,
+  `detalhes` text,
+  `data_acesso` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`log_id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `logs_acesso_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE SET NULL
+);
+
+CREATE TABLE `notificacoes` (
+  `notificacao_id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `empresa_id` int DEFAULT NULL,
-  `tipo_relatorio` enum('vendas','estoque','avaliacoes') NOT NULL,
-  `dados` json NOT NULL,
-  `data_geracao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`relatorio_id`),
+  `mensagem` text,
+  `lida` tinyint(1) DEFAULT '0',
+  `data_notificacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`notificacao_id`),
   KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `relatorios_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE SET NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `notificacoes_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+);
+
 
 CREATE TABLE `taxas_impostos` (
-  `taxa_id` int NOT NULL AUTO_INCREMENT,
+  `taxa_id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(255) NOT NULL,
   `percentual` decimal(5,2) NOT NULL,
   `tipo` enum('imposto','taxa') NOT NULL,
   PRIMARY KEY (`taxa_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE `usuarios` (
-  `usuario_id` int NOT NULL AUTO_INCREMENT,
-  `empresa_id` int NOT NULL,
-  `nome` varchar(255) NOT NULL,
-  `email` varchar(255) NOT NULL,
-  `senha_hash` varchar(255) NOT NULL,
-  `papel` enum('administrador','operador_triagem','especialista','comprador') NOT NULL,
-  `data_criacao` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `ultimo_login` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`usuario_id`),
-  UNIQUE KEY `email` (`email`),
+CREATE TABLE `relatorios` (
+  `relatorio_id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) DEFAULT NULL,
+  `tipo_relatorio` enum('vendas','estoque','avaliacoes') NOT NULL,
+  `dados` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL CHECK (json_valid(`dados`)),
+  `data_geracao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`relatorio_id`),
   KEY `empresa_id` (`empresa_id`),
-  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `relatorios_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `promocoes` (
+  `promocao_id` int(11) NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(50) NOT NULL,
+  `descricao` text DEFAULT NULL,
+  `desconto_percentual` decimal(5,2) DEFAULT NULL,
+  `desconto_valor` decimal(10,2) DEFAULT NULL,
+  `data_inicio` date NOT NULL,
+  `data_fim` date NOT NULL,
+  `quantidade_disponivel` int(11) DEFAULT NULL,
+  `ativo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`promocao_id`),
+  UNIQUE KEY `codigo` (`codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `preferencias_notificacao` (
+  `preferencia_id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
+  `tipo_notificacao` enum('email','sms','in-app') NOT NULL,
+  `ativo` tinyint(1) DEFAULT 1,
+  PRIMARY KEY (`preferencia_id`),
+  KEY `empresa_id` (`empresa_id`),
+  CONSTRAINT `preferencias_notificacao_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `pagamentos` (
+  `pagamento_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) DEFAULT NULL,
+  `valor_pago` decimal(10,2) NOT NULL,
+  `data_pagamento` timestamp NOT NULL DEFAULT current_timestamp(),
+  `metodo_pagamento` enum('boleto','cartao_credito','transferencia') NOT NULL,
+  PRIMARY KEY (`pagamento_id`),
+  KEY `pedido_id` (`pedido_id`),
+  CONSTRAINT `pagamentos_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `mensagens` (
+  `mensagem_id` int(11) NOT NULL AUTO_INCREMENT,
+  `remetente_id` int(11) NOT NULL,
+  `destinatario_id` int(11) NOT NULL,
+  `conteudo` text NOT NULL,
+  `data_mensagem` timestamp NOT NULL DEFAULT current_timestamp(),
+  `lida` tinyint(1) DEFAULT 0,
+  PRIMARY KEY (`mensagem_id`),
+  KEY `remetente_id` (`remetente_id`),
+  KEY `destinatario_id` (`destinatario_id`),
+  CONSTRAINT `mensagens_ibfk_1` FOREIGN KEY (`remetente_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE,
+  CONSTRAINT `mensagens_ibfk_2` FOREIGN KEY (`destinatario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `historico_precos` (
+  `historico_id` int(11) NOT NULL AUTO_INCREMENT,
+  `produto_id` int(11) NOT NULL,
+  `preco_anterior` decimal(10,2) NOT NULL,
+  `preco_novo` decimal(10,2) NOT NULL,
+  `data_alteracao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`historico_id`),
+  KEY `produto_id` (`produto_id`),
+  CONSTRAINT `historico_precos_ibfk_1` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`produto_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `enderecos` (
+  `endereco_id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
+  `tipo` enum('comercial','entrega','faturamento') NOT NULL,
+  `endereco` text NOT NULL,
+  `cidade` varchar(100) NOT NULL,
+  `estado` varchar(100) NOT NULL,
+  `cep` varchar(10) NOT NULL,
+  `pais` varchar(100) NOT NULL,
+  PRIMARY KEY (`endereco_id`),
+  KEY `empresa_id` (`empresa_id`),
+  CONSTRAINT `enderecos_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `documentos_fiscais` (
+  `documento_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `pedido_id` int(11) DEFAULT NULL,
+  `numero_nota_fiscal` varchar(50) NOT NULL,
+  `caminho_documento` text DEFAULT NULL,
+  `data_emissao` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`documento_id`),
+  KEY `pedido_id` (`pedido_id`),
+  CONSTRAINT `documentos_fiscais_ibfk_1` FOREIGN KEY (`pedido_id`) REFERENCES `pedidos` (`pedido_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `configuracoes_seguranca` (
+  `seguranca_id` int(11) NOT NULL AUTO_INCREMENT,
+  `usuario_id` int(11) NOT NULL,
+  `dois_fatores` tinyint(1) DEFAULT 0,
+  `pergunta_seguranca` varchar(255) DEFAULT NULL,
+  `resposta_seguranca` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`seguranca_id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `configuracoes_seguranca_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`usuario_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE `configuracoes_empresa` (
+  `configuracao_id` int(11) NOT NULL AUTO_INCREMENT,
+  `empresa_id` int(11) NOT NULL,
+  `chave` varchar(100) NOT NULL,
+  `valor` text DEFAULT NULL,
+  PRIMARY KEY (`configuracao_id`),
+  KEY `empresa_id` (`empresa_id`),
+  CONSTRAINT `configuracoes_empresa_ibfk_1` FOREIGN KEY (`empresa_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
