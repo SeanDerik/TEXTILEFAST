@@ -3,13 +3,21 @@ import path from 'path';
 
 export const obterTodosProdutos = async (req, res) => {
   try {
-    const produtos = await Produtos.findAll();
-    return res.status(200).json({ produtos });
+    const { empresa_id } = req.empresa;
+    if (!empresa_id) {
+      return res.status(400).json({ error: 'ID da empresa não fornecido.' });
+    }
+    const produtos = await Produtos.findAll({
+      where: { fornecedor_id: empresa_id },
+    });
+
+    return res.status(200).json(produtos);
   } catch (error) {
     console.error('Erro ao obter produtos:', error);
-    return res.status(500).json({ error: 'Erro ao obter produtos' });
+    return res.status(500).json({ error: 'Erro ao obter produtos.' });
   }
 };
+
 
 export const criarProduto = async (req, res) => {
   const { nome_produto, descricao, preco, estoque, fornecedor_id, categoria_id } = req.body;
@@ -67,12 +75,12 @@ export const criarProduto = async (req, res) => {
 };
 
 export const atualizarProduto = async (req, res) => {
-  const { id } = req.params;
+  const { produto_id } = req.params;
   const { nome_produto, descricao, preco, estoque, fornecedor_id, categoria_id } = req.body;
   const imagem = req.file;
 
   try {
-    const produto = await Produtos.findByPk(id);
+    const produto = await Produtos.findByPk(produto_id);
     if (!produto) {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }
@@ -104,10 +112,10 @@ export const atualizarProduto = async (req, res) => {
 };
 
 export const excluirProduto = async (req, res) => {
-  const { id } = req.params;
+  const { produto_id } = req.params;
 
   try {
-    const produto = await Produtos.findByPk(id);
+    const produto = await Produtos.findByPk(produto_id);
     if (!produto) {
       return res.status(404).json({ error: 'Produto não encontrado' });
     }

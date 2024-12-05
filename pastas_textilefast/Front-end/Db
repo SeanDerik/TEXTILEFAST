@@ -34,7 +34,7 @@ CREATE TABLE `categorias` (
   `descricao` text,
   PRIMARY KEY (`categoria_id`),
   UNIQUE KEY `nome_categoria` (`nome_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `configuracoes_empresa` (
   `configuracao_id` int NOT NULL AUTO_INCREMENT,
@@ -232,11 +232,11 @@ CREATE TABLE `produtos` (
   `data_cadastro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `imagem_url` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`produto_id`),
-  KEY `fornecedor_id` (`fornecedor_id`),
   KEY `categoria_id` (`categoria_id`),
+  KEY `produtos_ibfk_1` (`fornecedor_id`),
   CONSTRAINT `produtos_ibfk_1` FOREIGN KEY (`fornecedor_id`) REFERENCES `empresas` (`empresa_id`) ON DELETE CASCADE,
   CONSTRAINT `produtos_ibfk_2` FOREIGN KEY (`categoria_id`) REFERENCES `categorias` (`categoria_id`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `promocoes` (
   `promocao_id` int NOT NULL AUTO_INCREMENT,

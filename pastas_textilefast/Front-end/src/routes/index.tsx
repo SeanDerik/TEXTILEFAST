@@ -7,6 +7,7 @@ import Loginformpage from "../pages/Loginformpage";
 import Profilepage from "../pages/Profilepage"; // Corrected import
 import { Carrinho } from "../pages/Carrinho";
 import AdicionarProduto from "../pages/adicionarProdutos";
+import Termos from "../components/Termos";
 
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
@@ -27,6 +28,7 @@ export function Approutes() {
                 <Route path="/loginform" element={<Loginformpage />} />
                 <Route path="/profile" element={<Profilepage />} />
                 <Route path="/adicionar-produto" element={<AdicionarProduto />} />
+                <Route path="/termos" element={<Termos />} />
                 <Route path="/carrinho" element={<Carrinho />} />
             </Routes>
         </>

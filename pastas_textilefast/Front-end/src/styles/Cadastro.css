@@ -1,66 +1,107 @@
+/* Reset global */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #fff;
+}
+
+/* Container principal */
 .cadastro-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #fff;
-  }
-  
-  .header {
-    width: 100%;
-    background-color: #FF0048;
-    padding: 20px;
-    text-align: center;
-    color: white;
-  }
-  
-  .cadastro-content {
-    max-width: 400px;
-    width: 100%;
-    background-color: #f9f9f9;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #FF0048;
-  }
-  
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .cadastro-button {
-    width: 100%;
-    padding: 10px;
-    background-color: #FF0048;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cadastro-button:hover {
-    background-color: #E60040;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.header {
+  width: 100%;
+  background-color: #FF0048;
+  padding: 20px;
+  text-align: center;
+  color: white;
+}
+
+.cadastro-content {
+  max-width: 400px;
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+  margin-top: 20px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #FF0048;
+}
+
+/* Formulário */
+.form-group {
+  margin-bottom: 15px;
+}
+
+label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Botão de cadastro */
+.cadastro-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #FF0048;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cadastro-button:hover {
+  background-color: #E60040;
+}
+
+.termos-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+  width: 100%;
+}
+
+.termos-container label {
+  font-weight: normal;
+  font-size: 14px;
+  margin-right: 10px; 
+}
+
+.termos-container input {
+  margin-left: -220px;
+}
+
+
+.error-text {
+  color: red;
+  font-size: 12px;
+}

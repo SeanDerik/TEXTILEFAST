@@ -26,7 +26,7 @@ const upload = multer({
   },
 });
 
-router.get('/produtos', obterTodosProdutos);
+router.get('/produtos', verifyToken, obterTodosProdutos);
 router.post('/produtos', verifyToken, upload.single('imagem'), (req, res, next) => {
   console.log('file produtosRouters:', req.file);
   if (req.fileValidationError) {
@@ -34,7 +34,7 @@ router.post('/produtos', verifyToken, upload.single('imagem'), (req, res, next) 
   }
   next();
 }, criarProduto);
-router.put('/produtos/:id', verifyToken, upload.single('imagem'), atualizarProduto);
-router.delete('/produtos/:id', verifyToken, excluirProduto);
+router.put('/produtos/:produto_id', verifyToken, upload.single('imagem'), atualizarProduto);
+router.delete('/produtos/:produto_id', verifyToken, excluirProduto);
 
 export default router;

@@ -1,0 +1,61 @@
+/* Estilo geral da página */
+.termos-container {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f4f4f9;
+    padding: 20px;
+  }
+  
+  .termos-header {
+    background-color: #FF0048;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  .termos-header h1 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .termos-content {
+    max-width: 800px;
+    margin: 30px auto;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .termos-section {
+    margin-bottom: 20px;
+  }
+  
+  .termos-section h2 {
+    font-size: 20px;
+    color: #FF0048;
+    margin-bottom: 10px;
+  }
+  
+  .termos-section p,
+  .termos-section ul {
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .termos-section ul {
+    padding-left: 20px;
+  }
+  
+  .termos-footer {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .termos-footer p {
+    margin: 5px 0;
+  }
+  

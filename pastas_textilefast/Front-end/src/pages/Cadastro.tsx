@@ -15,6 +15,7 @@ interface FormData {
   tipoEmpresa: 'comprador' | 'fornecedor';
   telefone: string;
   endereco: string;
+  termosAceitos: boolean;
 }
 
 const Cadastro: React.FC = () => {
@@ -26,13 +27,14 @@ const Cadastro: React.FC = () => {
     cnpj: '',
     razaoSocial: '',
     nomeFantasia: '',
-    tipoEmpresa: 'comprador', // Valor padrão
+    tipoEmpresa: 'comprador',
     telefone: '',
     endereco: '',
+    termosAceitos: false,
   });
 
   const [cnpjValido, setCnpjValido] = useState(true);
-  const [senhaValida, setSenhaValida] = useState(true); // State to track password validation
+  const [senhaValida, setSenhaValida] = useState(true);
   const { validarCNPJ, buscarDadosCNPJ, error } = useValidarCNPJ();
   const navigate = useNavigate();
 
@@ -40,7 +42,7 @@ const Cadastro: React.FC = () => {
     const cnpj = e.target.value;
     if (validarCNPJ(cnpj)) {
       setCnpjValido(true);
-      const data = await buscarDadosCNPJ(cnpj); // Buscar dados do CNPJ pela API
+      const data = await buscarDadosCNPJ(cnpj);
       if (data) {
         setFormData({
           ...formData,
@@ -48,6 +50,7 @@ const Cadastro: React.FC = () => {
           nomeFantasia: data.fantasia,
           telefone: data.telefone,
           endereco: `${data.logradouro}, ${data.municipio} - ${data.uf}`,
+          email: data.email,
         });
       }
     } else {
@@ -78,6 +81,10 @@ const Cadastro: React.FC = () => {
     }
     if (!senhaValida) {
       alert('As senhas não coincidem!');
+      return;
+    }
+    if (!formData.termosAceitos) {
+      alert('Você precisa aceitar os termos e condições!');
       return;
     }
 
@@ -180,6 +187,20 @@ const Cadastro: React.FC = () => {
               required
             />
             {!senhaValida && <span className="error-text">As senhas não coincidem!</span>}
+          </div>
+
+          <div className="form-group termos-container">
+            <label htmlFor="termos">
+              Eu aceito os <a href="/termos">termos e condições</a>.
+            </label>
+            <input
+              type="checkbox"
+              id="termos"
+              name="termosAceitos"
+              checked={formData.termosAceitos}
+              onChange={(e) => setFormData({ ...formData, termosAceitos: e.target.checked })}
+              required
+            />
           </div>
 
           <button type="submit" className="cadastro-button">

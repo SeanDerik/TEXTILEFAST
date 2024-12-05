@@ -46,12 +46,16 @@ Produto.init({
   imagem_url: {
     type: DataTypes.STRING(255),
     allowNull: true
+  },
+  data_cadastro: {
+    type: DataTypes.DATE,
+    allowNull: true       
   }
 }, {
   sequelize,
   modelName: 'Produto',
   tableName: 'produtos',
-  timestamps: false 
+  timestamps: false
 });
 
 Produto.belongsTo(Empresa, { foreignKey: 'fornecedor_id' });
