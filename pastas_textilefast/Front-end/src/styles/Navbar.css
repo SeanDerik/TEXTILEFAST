@@ -1,39 +1,53 @@
-.navbar {    
+/* Estilo da Navbar */
+.navbar {
+    display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     background-color: rgb(238, 19, 56);
     width: 100%;
-    
-}
-
-.button {
+    padding: 10px 20px;
+  }
+  
+  /* Estilo do botão da Navbar */
+  .button {
     width: fit-content;
     height: 50px;
-    border: none;         
-    border-radius: 0;
-    font-size: 20px;           
-    cursor: pointer;          
-    text-align: center;        
-    text-decoration: none;     
-    outline: none;    
+    padding: 0 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    outline: none;
     color: white;
     background-color: rgb(238, 19, 56);
-    color: rgb(255, 255, 255);
-}
-.button:hover {
-    width: fit-content;
-    height: 50px;
-    border: none;         
-    border-radius: 0;
-    font-size: 20px;           
-    cursor: pointer;          
-    text-align: center;        
-    text-decoration: none;     
-    outline: none;    
-    color: white;
-    background-color: rgb(255, 255, 255);
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* Efeito hover no botão */
+  .button:hover {
+    background-color: white;
     color: rgb(238, 19, 56);
-}
-.button:focus {
+  }
+  
+  /* Efeito focus no botão */
+  .button:focus {
     outline: none;
-}
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .navbar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .button {
+      font-size: 16px;
+      padding: 10px;
+    }
+  }
+  

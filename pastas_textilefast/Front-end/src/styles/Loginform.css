@@ -1,3 +1,4 @@
+/* Container principal do formulário de login */
 .login-form-container {
   display: flex;
   flex-direction: column;
@@ -7,6 +8,7 @@
   background-color: #fff;
 }
 
+/* Estilo do formulário de login */
 .login-form {
   max-width: 400px;
   width: 100%;
@@ -17,16 +19,21 @@
   margin-top: 20px;
 }
 
+/* Estilo do título */
 h2 {
   text-align: center;
   margin-bottom: 20px;
   color: #FF0048;
+  font-size: 24px;
+  font-weight: bold;
 }
 
+/* Estilo do grupo de campos */
 .form-group {
   margin-bottom: 15px;
 }
 
+/* Estilo do label */
 label {
   display: block;
   font-weight: bold;
@@ -34,17 +41,20 @@ label {
   color: #333;
 }
 
+/* Estilo dos inputs de texto */
 input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-bottom: 15px;
+  font-size: 16px;
 }
 
+/* Estilo do botão */
 button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #FF0048;
   color: white;
   border: none;
@@ -54,12 +64,26 @@ button {
   transition: background-color 0.3s ease;
 }
 
+/* Efeito ao passar o mouse sobre o botão */
 button:hover {
   background-color: #E60040;
 }
 
+/* Estilo para a mensagem de erro */
 .error-message {
   color: red;
   text-align: center;
   margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Responsividade */
+@media (max-width: 480px) {
+  .login-form {
+    padding: 15px;
+  }
+
+  button {
+    padding: 10px;
+  }
 }
