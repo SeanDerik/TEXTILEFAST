@@ -1,0 +1,62 @@
+/* Container for the Destaques component */
+.destaques-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.destaques-container h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+/* Style for the product list */
+.produto-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* Style for each product card */
+.produto-card {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 250px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow effect */
+  transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out; /* Added transform transition */
+  text-align: left;
+}
+
+/* Hover effect for product card */
+.produto-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+  transform: translateY(-5px); /* Slight lift on hover */
+}
+
+.produto-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.produto-card p {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.produto-card .preco {
+  font-weight: bold;
+  color: #2d2d2d;
+}
+
+.produto-card .estoque {
+  color: #ff6f61; /* Red for stock count */
+  font-weight: bold;
+}
+
+.no-products {
+  font-size: 1.2rem;
+  color: #777;
+  margin-top: 20px;
+}

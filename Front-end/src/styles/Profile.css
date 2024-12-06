@@ -1,0 +1,114 @@
+/* Container for the product form */
+.product-form {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 20px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow */
+}
+
+/* Form fields styling */
+.product-form input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Button styling */
+.product-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.product-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Add Product button styling */
+.products-container button {
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.products-container button:hover {
+  background-color: #218838;
+}
+
+/* Container for product cards (if applicable) */
+.products-container .product-card {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow to cards */
+  width: 23%; /* Set the width of each product card to be thinner */
+}
+
+/* Profile and ReclameAqui card styles */
+.profile-card {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adding shadow to cards */
+  font-size: 20px;
+}
+
+/* Styling for ReclameAqui card */
+.reclameaqui-card {
+  background-color: #fff;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin-top: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 25%; /* Set the width to 25% (one-fourth of the space) */
+  background-color: #64d17c; /* The background color stays */
+  color: #333; /* Ensures the text is dark and not blue */
+  text-decoration: none; /* Removes any underline if it's a link */
+}
+
+/* If there's a link inside the ReclameAqui card, remove link-specific styles */
+.reclameaqui-card a {
+  color: inherit; /* Inherit color from parent (text will be normal, not blue) */
+  text-decoration: none; /* Remove the underline from any links */
+}
+
+
+/* Make profile and ReclameAqui cards side by side */
+.profile-and-reclameaqui {
+  display: flex;
+  gap: 20px; /* Adds space between the two cards */
+}
+
+.profile-card {
+  width: 70%; /* Profile card takes up 70% of the space */
+}
+
+.reclameaqui-card {
+  width: 25%; /* ReclameAqui card takes up 25% of the space */
+}
+
+/* Make product cards side by side */
+.products-container {
+  display: flex;
+  flex-wrap: wrap; /* Ensures the products wrap to the next line if there isn't enough space */
+  gap: 20px; /* Adds space between the product cards */
+}

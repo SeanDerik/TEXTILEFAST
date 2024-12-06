@@ -1,0 +1,359 @@
+DROP DATABASE IF EXISTS textilefast;
+CREATE DATABASE textilefast;
+USE textilefast;
+CREATE TABLE empresas (
+    empresa_id INT AUTO_INCREMENT PRIMARY KEY,
+    cnpj VARCHAR(14) NOT NULL UNIQUE,
+    razao_social VARCHAR(255) NOT NULL,
+    nome_fantasia VARCHAR(255),
+    tipo_empresa ENUM('comprador', 'fornecedor') NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+    endereco TEXT,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reclameaqui TEXT,
+    senha TEXT
+);
+
+CREATE TABLE categorias (
+    categoria_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_categoria VARCHAR(100) NOT NULL UNIQUE,
+    descricao TEXT
+);
+
+CREATE TABLE produtos (
+    produto_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome_produto VARCHAR(255) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10, 2) NOT NULL,
+    estoque INT NOT NULL,
+    fornecedor_id INT NOT NULL,
+    categoria_id INT NOT NULL,
+    data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (fornecedor_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE,
+    FOREIGN KEY (categoria_id) REFERENCES categorias(categoria_id) ON DELETE CASCADE
+);
+
+CREATE TABLE avaliacoes_fornecedores (
+    avaliacao_id INT AUTO_INCREMENT PRIMARY KEY,
+    comprador_id INT,
+    fornecedor_id INT,
+    qualidade INT CHECK(qualidade BETWEEN 1 AND 5),
+    condicoes_financeiras INT CHECK(condicoes_financeiras BETWEEN 1 AND 5),
+    pontualidade INT CHECK(pontualidade BETWEEN 1 AND 5),
+    prazo_entrega INT CHECK(prazo_entrega BETWEEN 1 AND 5),
+    comentario TEXT,
+    data_avaliacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (comprador_id) REFERENCES empresas(empresa_id) ON DELETE SET NULL,
+    FOREIGN KEY (fornecedor_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE pedidos (
+    pedido_id INT AUTO_INCREMENT PRIMARY KEY,
+    comprador_id INT,
+    fornecedor_id INT,
+    total DECIMAL(10, 2) NOT NULL,
+    data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status ENUM('pendente', 'pago', 'enviado', 'concluido', 'cancelado') NOT NULL,
+    FOREIGN KEY (comprador_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE,
+    FOREIGN KEY (fornecedor_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE itens_pedido (
+    item_id INT AUTO_INCREMENT PRIMARY KEY,
+    pedido_id INT,
+    produto_id INT,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(pedido_id) ON DELETE CASCADE,
+    FOREIGN KEY (produto_id) REFERENCES produtos(produto_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE pagamentos (
+    pagamento_id SERIAL PRIMARY KEY,
+    pedido_id INT,
+    valor_pago DECIMAL(10, 2) NOT NULL,
+    data_pagamento TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    metodo_pagamento ENUM('boleto', 'cartao_credito', 'transferencia') NOT NULL,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(pedido_id) ON DELETE CASCADE
+);
+
+CREATE TABLE reclamacoes_fornecedores (
+    reclamacao_id SERIAL PRIMARY KEY,
+    comprador_id INT,
+    fornecedor_id INT,
+    descricao TEXT NOT NULL,
+    status ENUM('pendente', 'resolvida', 'fechada') DEFAULT 'pendente',
+    data_reclamacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (comprador_id) REFERENCES empresas(empresa_id) ON DELETE SET NULL,
+    FOREIGN KEY (fornecedor_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE documentos_fiscais (
+    documento_id SERIAL PRIMARY KEY,
+    pedido_id INT,
+    numero_nota_fiscal VARCHAR(50) NOT NULL,
+    caminho_documento TEXT,
+    data_emissao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (pedido_id) REFERENCES pedidos(pedido_id) ON DELETE CASCADE
+);
+
+CREATE TABLE notificacoes (
+    notificacao_id SERIAL PRIMARY KEY,
+    empresa_id INT,
+    mensagem TEXT,
+    lida BOOLEAN DEFAULT FALSE,
+    data_notificacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE usuarios (
+    usuario_id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    senha_hash VARCHAR(255) NOT NULL,
+    papel ENUM('administrador', 'operador_triagem', 'especialista', 'comprador') NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    ultimo_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE enderecos (
+    endereco_id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    tipo ENUM('comercial', 'entrega', 'faturamento') NOT NULL,
+    endereco TEXT NOT NULL,
+    cidade VARCHAR(100) NOT NULL,
+    estado VARCHAR(100) NOT NULL,
+    cep VARCHAR(10) NOT NULL,
+    pais VARCHAR(100) NOT NULL,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE imagens_produtos (
+    imagem_id INT AUTO_INCREMENT PRIMARY KEY,
+    produto_id INT NOT NULL,
+    url_imagem TEXT NOT NULL,
+    descricao TEXT,
+    data_upload TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (produto_id) REFERENCES produtos(produto_id) ON DELETE CASCADE
+);
+
+CREATE TABLE carrinho (
+    carrinho_id INT AUTO_INCREMENT PRIMARY KEY,
+    comprador_id INT NOT NULL,
+    data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (comprador_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE itens_carrinho (
+    item_carrinho_id INT AUTO_INCREMENT PRIMARY KEY,
+    carrinho_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    data_adicionado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (carrinho_id) REFERENCES carrinho(carrinho_id) ON DELETE CASCADE,
+    FOREIGN KEY (produto_id) REFERENCES produtos(produto_id) ON DELETE CASCADE
+);
+
+CREATE TABLE promocoes (
+    promocao_id INT AUTO_INCREMENT PRIMARY KEY,
+    codigo VARCHAR(50) UNIQUE NOT NULL,
+    descricao TEXT,
+    desconto_percentual DECIMAL(5,2),
+    desconto_valor DECIMAL(10,2),
+    data_inicio DATE NOT NULL,
+    data_fim DATE NOT NULL,
+    quantidade_disponivel INT,
+    ativo BOOLEAN DEFAULT TRUE
+);
+
+CREATE TABLE logs_acesso (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT,
+    acao VARCHAR(255) NOT NULL,
+    detalhes TEXT,
+    data_acesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE SET NULL
+);
+
+CREATE TABLE mensagens (
+    mensagem_id INT AUTO_INCREMENT PRIMARY KEY,
+    remetente_id INT NOT NULL,
+    destinatario_id INT NOT NULL,
+    conteudo TEXT NOT NULL,
+    data_mensagem TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    lida BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (remetente_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE,
+    FOREIGN KEY (destinatario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
+);
+
+CREATE TABLE configuracoes_empresa (
+    configuracao_id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    chave VARCHAR(100) NOT NULL,
+    valor TEXT,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE historico_precos (
+    historico_id INT AUTO_INCREMENT PRIMARY KEY,
+    produto_id INT NOT NULL,
+    preco_anterior DECIMAL(10,2) NOT NULL,
+    preco_novo DECIMAL(10,2) NOT NULL,
+    data_alteracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (produto_id) REFERENCES produtos(produto_id) ON DELETE CASCADE
+);
+
+CREATE TABLE taxas_impostos (
+    taxa_id INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(255) NOT NULL,
+    percentual DECIMAL(5,2) NOT NULL,
+    tipo ENUM('imposto', 'taxa') NOT NULL
+);
+
+CREATE TABLE relatorios (
+    relatorio_id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT,
+    tipo_relatorio ENUM('vendas', 'estoque', 'avaliacoes') NOT NULL,
+    dados JSON NOT NULL,
+    data_geracao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE SET NULL
+);
+
+CREATE TABLE preferencias_notificacao (
+    preferencia_id INT AUTO_INCREMENT PRIMARY KEY,
+    empresa_id INT NOT NULL,
+    tipo_notificacao ENUM('email', 'sms', 'in-app') NOT NULL,
+    ativo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (empresa_id) REFERENCES empresas(empresa_id) ON DELETE CASCADE
+);
+
+CREATE TABLE configuracoes_seguranca (
+    seguranca_id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    dois_fatores BOOLEAN DEFAULT FALSE,
+    pergunta_seguranca VARCHAR(255),
+    resposta_seguranca VARCHAR(255),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(usuario_id) ON DELETE CASCADE
+);
+
+-- Insert into empresas
+INSERT INTO empresas (cnpj, razao_social, nome_fantasia, tipo_empresa, email, telefone, endereco)
+VALUES
+('12345678000195', 'Empresa A LTDA', 'Empresa A', 'fornecedor', 'contato@empresaA.com', '11987654321', 'Rua A, 123, São Paulo, SP'),
+('98765432000147', 'Empresa B LTDA', 'Empresa B', 'comprador', 'contato@empresaB.com', '21987654321', 'Rua B, 456, Rio de Janeiro, RJ');
+
+-- Insert into categorias
+INSERT INTO categorias (nome_categoria, descricao)
+VALUES
+('Tecido', 'Materiais de tecido como algodão, poliéster, etc.'),
+('Fios', 'Diversos tipos de fios para costura e produção.');
+
+-- Insert into produtos
+INSERT INTO produtos (nome_produto, descricao, preco, estoque, fornecedor_id, categoria_id)
+VALUES
+('Tecido Algodão', 'Tecido 100% algodão de alta qualidade.', 15.50, 100, 1, 1),
+('Fio de Nylon', 'Fio resistente para costura e artesanato.', 3.75, 200, 1, 2);
+
+-- Insert into usuarios
+INSERT INTO usuarios (empresa_id, nome, email, senha_hash, papel)
+VALUES
+(1, 'Admin Empresa A', 'admin@empresaA.com', 'hashed_password_123', 'administrador'),
+(2, 'Comprador Empresa B', 'comprador@empresaB.com', 'hashed_password_456', 'comprador');
+
+-- Insert into enderecos
+INSERT INTO enderecos (empresa_id, tipo, endereco, cidade, estado, cep, pais)
+VALUES
+(1, 'comercial', 'Rua A, 123', 'São Paulo', 'SP', '01001-000', 'Brasil'),
+(2, 'entrega', 'Rua B, 456', 'Rio de Janeiro', 'RJ', '20001-000', 'Brasil');
+
+-- Insert into avaliacoes_fornecedores
+INSERT INTO avaliacoes_fornecedores (comprador_id, fornecedor_id, qualidade, condicoes_financeiras, pontualidade, prazo_entrega, comentario)
+VALUES
+(2, 1, 5, 4, 5, 5, 'Fornecedor excelente, produtos de qualidade.');
+
+-- Insert into pedidos
+INSERT INTO pedidos (comprador_id, fornecedor_id, total, status)
+VALUES
+(2, 1, 310.50, 'pago');
+
+-- Insert into itens_pedido
+INSERT INTO itens_pedido (pedido_id, produto_id, quantidade, preco_unitario)
+VALUES
+(1, 1, 10, 15.50),
+(1, 2, 50, 3.75);
+
+-- Insert into pagamentos
+INSERT INTO pagamentos (pedido_id, valor_pago, metodo_pagamento)
+VALUES
+(1, 310.50, 'cartao_credito');
+
+-- Insert into reclamacoes_fornecedores
+INSERT INTO reclamacoes_fornecedores (comprador_id, fornecedor_id, descricao)
+VALUES
+(2, 1, 'Entrega atrasada, mas resolvida rapidamente.');
+
+-- Insert into imagens_produtos
+INSERT INTO imagens_produtos (produto_id, url_imagem, descricao)
+VALUES
+(1, 'https://example.com/images/tecido.jpg', 'Imagem de Tecido Algodão'),
+(2, 'https://example.com/images/fio.jpg', 'Imagem de Fio de Nylon');
+
+-- Insert into carrinho
+INSERT INTO carrinho (comprador_id)
+VALUES
+(2);
+
+-- Insert into itens_carrinho
+INSERT INTO itens_carrinho (carrinho_id, produto_id, quantidade)
+VALUES
+(1, 1, 5),
+(1, 2, 10);
+
+-- Insert into promocoes
+INSERT INTO promocoes (codigo, descricao, desconto_percentual, data_inicio, data_fim, quantidade_disponivel)
+VALUES
+('DESC10', 'Desconto de 10% em compras', 10.00, '2024-01-01', '2024-12-31', 100);
+
+-- Insert into logs_acesso
+INSERT INTO logs_acesso (usuario_id, acao, detalhes)
+VALUES
+(1, 'Login', 'Login efetuado com sucesso.');
+
+-- Insert into mensagens
+INSERT INTO mensagens (remetente_id, destinatario_id, conteudo)
+VALUES
+(1, 2, 'Bem-vindo à nossa plataforma!');
+
+-- Insert into configuracoes_empresa
+INSERT INTO configuracoes_empresa (empresa_id, chave, valor)
+VALUES
+(1, 'frete_gratis', 'true');
+
+-- Insert into historico_precos
+INSERT INTO historico_precos (produto_id, preco_anterior, preco_novo)
+VALUES
+(1, 14.50, 15.50);
+
+-- Insert into taxas_impostos
+INSERT INTO taxas_impostos (descricao, percentual, tipo)
+VALUES
+('ICMS', 18.00, 'imposto');
+
+-- Insert into relatorios
+INSERT INTO relatorios (empresa_id, tipo_relatorio, dados)
+VALUES
+(1, 'vendas', '{"total_vendas": 5000.00, "produtos": [{"nome": "Tecido Algodão", "quantidade": 200}]}');
+
+-- Insert into preferencias_notificacao
+INSERT INTO preferencias_notificacao (empresa_id, tipo_notificacao)
+VALUES
+(2, 'email');
+
+-- Insert into configuracoes_seguranca
+INSERT INTO configuracoes_seguranca (usuario_id, dois_fatores, pergunta_seguranca, resposta_seguranca)
+VALUES
+(1, TRUE, 'Qual é o nome do seu primeiro animal de estimação?', 'Rex');

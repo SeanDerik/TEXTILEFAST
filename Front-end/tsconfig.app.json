@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+
+    /* Import and module settings */
+    "allowSyntheticDefaultImports": true, // Permite importação default de módulos sem export padrão
+    "esModuleInterop": true               // Facilita compatibilidade com CommonJS e ESModules
+  },
+  "include": ["src", "../Back-end/utils"]
+}
