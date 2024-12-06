@@ -62,7 +62,6 @@
     background-color: #E60040;
   }
   
-  /* Product section */
   .products-section {
     width: 100%;
     max-width: 800px;
@@ -121,7 +120,6 @@
     background-color: #E60040;
   }
   
-  /* Product edit form */
   .product-edit-form {
     display: flex;
     flex-direction: column;
@@ -173,14 +171,13 @@
     background-color: #bbb;
   }
   
-  /* Image preview */
   .product-image-preview {
     margin-top: 15px;
     text-align: center;
   }
   
   .product-image-preview img {
-    max-width: 100%;
+    max-width: 20%;
     height: auto;
     border-radius: 8px;
     margin-top: 10px;
@@ -188,7 +185,6 @@
     object-fit: cover;
   }
   
-  /* Error message */
   .error-text {
     color: red;
     font-size: 12px;

@@ -248,18 +248,21 @@ const Profile: React.FC = () => {
                           {new Date(produto.data_cadastro).toLocaleDateString()}
                         </p>
                         {produto.imagem_url && (
-                          <div>
+                          <div className="product-image-preview">
                             <img
                               src={`${produto.imagem_url.replace(/\\/g, '/')}`}
                               alt={`Imagem do produto ${produto.nome_produto}`}
                               style={{
-                                maxWidth: '100%',
+                                maxWidth: '150px',  // Tamanho de preview menor
                                 height: 'auto',
                                 borderRadius: '8px',
+                                objectFit: 'cover',  // Garante que a imagem cubra a área sem distorcer
+                                marginTop: '10px',
                               }}
                             />
                           </div>
                         )}
+
 
 
 
