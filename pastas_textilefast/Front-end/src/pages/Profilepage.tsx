@@ -153,32 +153,40 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div className="profile-container">
-      <div className="profile-card">
-        <h1>{empresa.nome_fantasia}</h1>
-        <p>{empresa.razao_social}</p>
-        <p>{empresa.email}</p>
-        <p>{empresa.telefone}</p>
-        <p>{empresa.endereco}</p>
-        <p>{empresa.tipo_empresa}</p>
+    <div>
+      <nav className="navbar">
+        <div className="navbar-logo" onClick={() => navigate('/home')}>
+          <span>Textilefast</span>
+        </div>
+        <ul className="navbar-menu">
+          <li onClick={() => navigate('/catalogpage')}>Catálogo</li>
+          <li onClick={() => navigate('/login')}>Logout</li>
+        </ul>
+      </nav>
+
+      <div className="profile-container">
+        <div className="profile-card">
+          <h1>{empresa.nome_fantasia}</h1>
+          <p>{empresa.razao_social}</p>
+          <p>{empresa.email}</p>
+          <p>{empresa.telefone}</p>
+          <p>{empresa.endereco}</p>
+          <p>{empresa.tipo_empresa}</p>
+
+          {isFornecedor && (
+            <button className="create-product-button" onClick={() => navigate('/adicionar-produto')}>
+              Criar Produto
+            </button>
+          )}
+        </div>
 
         {isFornecedor && (
-          <button className="create-product-button" onClick={() => navigate('/adicionar-produto')}>
-            Criar Produto
-          </button>
-        )}
-      </div>
-
-      {isFornecedor && (
-        <div className="products-section">
-          <h2>Produtos Cadastrados</h2>
-          {produtos.length > 0 ? (
-            <ul className="product-list">
-              {produtos.map((produto, index) => {
-                console.log('Produto:', produto);
-                console.log('URL da imagem:', produto.imagem_url);
-                return (
-                  <li key={produto.produto_id || index} className="product-item">
+          <div className="products-section">
+            <h2>Produtos Cadastrados</h2>
+            {produtos.length > 0 ? (
+              <ul className="product-list">
+                {produtos.map((produto) => (
+                  <li key={produto.produto_id} className="product-item">
                     {editingProdutoId === produto.produto_id ? (
                       <div>
                         <label>
@@ -217,14 +225,12 @@ const Profile: React.FC = () => {
                             onChange={handleChange}
                           />
                         </label>
-
                         <div>
                           <strong>Imagem do Produto:</strong>
                           <input type="file" onChange={handleImageChange} />
                           {selectedImage && <p>Imagem selecionada: {selectedImage.name}</p>}
                           <button onClick={() => handleImageUpload(produto.produto_id)}>Upload Imagem</button>
                         </div>
-
                         <button onClick={handleConfirmEdit}>Salvar</button>
                         <button onClick={() => setEditingProdutoId(null)}>Cancelar</button>
                       </div>
@@ -253,32 +259,28 @@ const Profile: React.FC = () => {
                               src={`${produto.imagem_url.replace(/\\/g, '/')}`}
                               alt={`Imagem do produto ${produto.nome_produto}`}
                               style={{
-                                maxWidth: '150px',  // Tamanho de preview menor
+                                maxWidth: '150px',
                                 height: 'auto',
                                 borderRadius: '8px',
-                                objectFit: 'cover',  // Garante que a imagem cubra a área sem distorcer
+                                objectFit: 'cover',
                                 marginTop: '10px',
                               }}
                             />
                           </div>
                         )}
-
-
-
-
                         <button onClick={() => handleEdit(produto)}>Editar</button>
                         <button onClick={() => handleDelete(produto.produto_id)}>Excluir</button>
                       </div>
                     )}
                   </li>
-                );
-              })}
-            </ul>
-          ) : (
-            <p>Nenhum produto cadastrado.</p>
-          )}
-        </div>
-      )}
+                ))}
+              </ul>
+            ) : (
+              <p>Nenhum produto cadastrado.</p>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

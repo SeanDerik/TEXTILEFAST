@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
+import { Navbar } from '../components/Navbar'; 
 import '../styles/AddProduct.css';
 
 const AdicionarProduto: React.FC = () => {
@@ -45,7 +46,7 @@ const AdicionarProduto: React.FC = () => {
     }
 
     const decodedToken: any = jwtDecode(token);
-    console.log('Decoded Token:', decodedToken);  // Verifique o conteúdo do token
+    console.log('Decoded Token:', decodedToken);
     const fornecedor_id = decodedToken.empresa_id;
 
     if (!fornecedor_id) {
@@ -92,6 +93,7 @@ const AdicionarProduto: React.FC = () => {
 
   return (
     <div className="add-product-container">
+      <Navbar />
       <h1>Adicionar Produto</h1>
       <form onSubmit={handleSubmit}>
         <div>
@@ -153,6 +155,7 @@ const AdicionarProduto: React.FC = () => {
         {erro && <p className="error">{erro}</p>}
         <button type="submit">Adicionar Produto</button>
       </form>
+      <Footer />
     </div>
   );
 };

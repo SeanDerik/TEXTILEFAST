@@ -1,53 +1,61 @@
-/* Estilo da Navbar */
 .navbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    background-color: rgb(238, 19, 56);
-    width: 100%;
-    padding: 10px 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(238, 19, 56);
+  width: 100%;
+  padding: 10px 20px;
+}
+
+.navbar-logo img {
+  max-height: 60px;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+}
+
+.button {
+  width: fit-content;
+  height: 50px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: white;
+  background-color: rgb(238, 19, 56);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.button:hover {
+  background-color: white;
+  color: rgb(238, 19, 56);
+}
+
+.button:focus {
+  outline: none;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  /* Estilo do botão da Navbar */
+
+  .button-group {
+    flex-direction: column;
+    gap: 10px; 
+  }
+
   .button {
-    width: fit-content;
-    height: 50px;
-    padding: 0 20px;
-    border: none;
-    border-radius: 5px;
-    font-size: 18px;
-    font-weight: bold;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    outline: none;
-    color: white;
-    background-color: rgb(238, 19, 56);
-    transition: background-color 0.3s, color 0.3s;
+    font-size: 16px;
+    padding: 10px;
   }
-  
-  /* Efeito hover no botão */
-  .button:hover {
-    background-color: white;
-    color: rgb(238, 19, 56);
-  }
-  
-  /* Efeito focus no botão */
-  .button:focus {
-    outline: none;
-  }
-  
-  /* Responsividade */
-  @media (max-width: 768px) {
-    .navbar {
-      flex-direction: column;
-      align-items: flex-start;
-    }
-  
-    .button {
-      font-size: 16px;
-      padding: 10px;
-    }
-  }
-  
+}
