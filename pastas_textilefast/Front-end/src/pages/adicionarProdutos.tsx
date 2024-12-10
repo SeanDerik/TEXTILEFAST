@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
 import { Navbar } from '../components/Navbar'; 
+import Footer from '../components/Footer';
 import '../styles/AddProduct.css';
 
 const AdicionarProduto: React.FC = () => {
