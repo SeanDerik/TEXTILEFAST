@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { obterTodosProdutos, criarProduto, atualizarProduto, excluirProduto } from '../../controllers/produtosController.mjs';
+import { obterTodosProdutos, criarProduto, atualizarProduto, excluirProduto, listarProdutos } from '../../controllers/produtosController.mjs';
 import verifyToken from '../../utils/authMiddleware.js';
 
 const router = express.Router();
@@ -27,6 +27,7 @@ const upload = multer({
 });
 
 router.get('/produtos', verifyToken, obterTodosProdutos);
+router.get('/getProdutos', listarProdutos);
 router.post('/produtos', verifyToken, upload.single('imagem'), (req, res, next) => {
   console.log('file produtosRouters:', req.file);
   if (req.fileValidationError) {
