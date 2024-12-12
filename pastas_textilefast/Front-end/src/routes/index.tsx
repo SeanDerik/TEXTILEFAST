@@ -8,7 +8,8 @@ import Profilepage from "../pages/Profilepage";
 import { Carrinho } from "../pages/Carrinho";
 import AdicionarProduto from "../pages/adicionarProdutos";
 import Termos from "../components/Termos";
-import FornecedorProfile from "../pages/perfil-fornecedor"; 
+import FornecedorProfile  from "../pages/perfil-fornecedor";
+import { ProdutoDetalhes } from "../pages/ProdutoDetalhes";
 
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
@@ -23,7 +24,7 @@ export function Approutes() {
             <Routes>
                 <Route path="/home" element={<Home />} />
                 <Route path="/cadastro" element={<Cadastro />} />
-                {/* <Route path="/product-page" element={<Paginaproduto />} /> */}
+                <Route path="/produto/:produto_id" element={<ProdutoDetalhes />} />
                 <Route path="/catalogpage" element={<Catalogpage />} />
                 <Route path="/" element={<Loginpage />} />
                 <Route path="/loginform" element={<Loginformpage />} />
@@ -31,7 +32,7 @@ export function Approutes() {
                 <Route path="/adicionar-produto" element={<AdicionarProduto />} />
                 <Route path="/termos" element={<Termos />} />
                 <Route path="/carrinho" element={<Carrinho />} />
-                <Route path="/fornecedor-profile" element={<FornecedorProfile />} /> {/* Nova rota */}
+                <Route path="/fornecedor-profile/:empresa_id?" element={<FornecedorProfile />} /> {/* Rota atualizada */}
             </Routes>
         </>
     );

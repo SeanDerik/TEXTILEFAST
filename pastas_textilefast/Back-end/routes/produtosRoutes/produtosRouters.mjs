@@ -1,7 +1,7 @@
 import express from 'express';
 import multer from 'multer';
 import path from 'path';
-import { obterTodosProdutos, criarProduto, atualizarProduto, excluirProduto, listarProdutos } from '../../controllers/produtosController.mjs';
+import { obterTodosProdutos, criarProduto, atualizarProduto, excluirProduto, listarProdutos, obterProdutoPorId } from '../../controllers/produtosController.mjs';
 import verifyToken from '../../utils/authMiddleware.js';
 
 const router = express.Router();
@@ -35,7 +35,8 @@ router.post('/produtos', verifyToken, upload.single('imagem'), (req, res, next) 
   }
   next();
 }, criarProduto);
-router.put('/produtos/:produto_id', verifyToken, upload.single('imagem'), atualizarProduto);
+router.put('/produto/:produto_id', verifyToken, upload.single('imagem'), atualizarProduto);
 router.delete('/produtos/:produto_id', verifyToken, excluirProduto);
+router.get('/produtos/:produto_id', verifyToken, obterProdutoPorId);
 
 export default router;

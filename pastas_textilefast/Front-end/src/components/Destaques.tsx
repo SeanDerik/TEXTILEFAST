@@ -2,7 +2,7 @@ import { Produto } from "./Produto";
 import '../styles/Destaques.css';
 
 interface DestaquesProps {
-    produtos: { produtos: any[] }; // Ajustado para receber o objeto
+    produtos: { produtos: any[] }; 
 }
 
 export function Destaques({ produtos }: DestaquesProps) {

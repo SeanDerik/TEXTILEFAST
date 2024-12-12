@@ -139,3 +139,19 @@ export const listarProdutos = async (req, res) => {
     return res.status(500).json({ error: 'Erro ao listar produtos' });
   }
 };
+
+export const obterProdutoPorId = async (req, res) => {
+  const { produto_id } = req.params;
+
+  try {
+    const produto = await Produtos.findByPk(produto_id);
+    if (!produto) {
+      return res.status(404).json({ error: 'Produto não encontrado' });
+    }
+
+    return res.status(200).json(produto);
+  } catch (error) {
+    console.error('Erro ao obter produto:', error);
+    return res.status(500).json({ error: 'Erro ao obter produto' });
+  }
+};

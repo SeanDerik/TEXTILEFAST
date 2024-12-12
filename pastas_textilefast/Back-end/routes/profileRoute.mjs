@@ -6,7 +6,7 @@ const router = express.Router();
 
 router.get('/profile', verifyToken, async (req, res) => {
   try {
-    const empresaId = req.empresa.empresa_id;  // Acesso aos dados do token (empresa_id)
+    const empresaId = req.empresa.empresa_id; 
 
     const empresa = await Empresas.findOne({ where: { empresa_id: empresaId } });
 

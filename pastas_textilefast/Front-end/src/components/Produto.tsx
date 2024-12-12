@@ -14,7 +14,7 @@ export function Produto({ produto }: ProdutoProps) {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate(`/perfil-fornecedor/${produto.produto_id}`);
+        navigate(`/produto/${produto.produto_id}`); // Atualizado para redirecionar corretamente
     };
 
     const precoNumerico = Number(produto.preco);
