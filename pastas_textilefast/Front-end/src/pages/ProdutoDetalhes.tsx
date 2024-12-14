@@ -111,7 +111,7 @@ export function ProdutoDetalhes() {
                 </div>
 
 
-                <button className="comprar-button" onClick={() => navigate(`/simular-compra/${produto.produto_id}`, { state: { preco: produto.preco, endereco: fornecedor.endereco } })} >
+                <button className="comprar-button" onClick={() => navigate(`/simular-compra/${produto.produto_id}`, { state: { preco: produto.preco,estoque: produto.estoque, endereco: fornecedor.endereco } })} >
                     Comprar
                 </button>
             </div>

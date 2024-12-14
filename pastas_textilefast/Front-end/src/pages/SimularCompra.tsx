@@ -12,6 +12,7 @@ export function SimularCompra() {
     const [frete, setFrete] = useState('padrao');
     const [metodoPagamento, setMetodoPagamento] = useState('credito');
     const [precoProduto, setPrecoProduto] = useState(0);
+    const [estoque, setEstoqueProduto] = useState(0);
 
     const freteValores: { [key: string]: number } = {
         padrao: 10.0,
@@ -24,6 +25,7 @@ export function SimularCompra() {
             console.log('State recebido:', state);
             setPrecoProduto(Number(state.preco) || 100.0);
             setEndereco(state.endereco || '');
+            setEstoqueProduto(state.estoque || 0);
         }
     }, [state]);
 
@@ -48,6 +50,16 @@ export function SimularCompra() {
         Total: R$ ${totalPedido.toFixed(2)}`);
 
         navigate('/home');
+    };
+
+    const handleQuantidadeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const quantidadeSelecionada = Number(e.target.value);
+        if (quantidadeSelecionada <= estoque) {
+            setQuantidade(quantidadeSelecionada);
+        } else {
+            alert(`A quantidade máxima disponível é ${estoque}.`);
+            setQuantidade(estoque);
+        }
     };
 
     return (
@@ -75,8 +87,9 @@ export function SimularCompra() {
                     <input
                         type="number"
                         value={quantidade}
-                        onChange={(e) => setQuantidade(Number(e.target.value))}
+                        onChange={handleQuantidadeChange}
                         min="1"
+                        max={estoque}
                     />
                 </div>
 
