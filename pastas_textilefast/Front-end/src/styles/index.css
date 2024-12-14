@@ -1,13 +1,12 @@
-/* Container principal da página */
+
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4; /* Cor de fundo */
+  background-color: #f4f4f4;
 }
 
-/* Conteúdo principal (logo e botões) */
 .login-content {
   display: flex;
   flex-direction: column;
@@ -19,56 +18,24 @@
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px; /* Limita a largura máxima do conteúdo */
+  max-width: 400px; /
 }
 
-/* Logo */
 .littlelogo {
   margin-bottom: 20px;
   max-width: 70%;
   height: auto;
 }
 
-/* Container dos botões */
+
 .button-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Espaçamento entre os botões */
+  gap: 10px; 
   margin-top: 20px;
 }
 
-/* Estilo dos botões de login e registro */
-button {
-  padding: 12px 20px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  width: 100%; /* Garante que os botões ocupem toda a largura disponível */
-}
 
-/* Botão de login */
-.login-button {
-  background-color: #FF0048;
-  color: white;
-}
-
-.login-button:hover {
-  background-color: #E60040;
-}
-
-/* Botão de registrar */
-.registrar-button {
-  background-color: #ccc;
-  color: #333;
-}
-
-.registrar-button:hover {
-  background-color: #999;
-}
-
-/* Responsividade para telas pequenas */
 @media (max-width: 480px) {
   .login-content {
     padding: 15px;
@@ -82,3 +49,22 @@ button {
     margin-bottom: 10px;
   }
 }
+
+.destaques-container {
+  display: flex;
+  flex-wrap: wrap; 
+  justify-content: space-between; 
+  gap: 20px; 
+  margin: 20px;
+}
+
+.destaque-item {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  flex: 1 1 calc(33.333% - 40px);
+  max-width: calc(33.333% - 40px);
+  box-sizing: border-box;
+}
+

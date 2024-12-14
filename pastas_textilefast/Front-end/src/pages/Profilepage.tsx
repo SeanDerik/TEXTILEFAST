@@ -90,7 +90,7 @@ const Profile: React.FC = () => {
     try {
       console.log('Atualizando produto:', editingProduto);
       const response = await axios.put(
-        `http://localhost:3001/api/produtos/produtos/${editingProdutoId}`,
+        `http://localhost:3001/api/produtos/produto/${editingProdutoId}`,
         editingProduto,
         {
           headers: { Authorization: `Bearer ${getToken()}` },
@@ -159,8 +159,7 @@ const Profile: React.FC = () => {
           <span>Textilefast</span>
         </div>
         <ul className="navbar-menu">
-          <li onClick={() => navigate('/catalogpage')}>Catálogo</li>
-          <li onClick={() => navigate('/login')}>Logout</li>
+          <li onClick={() => navigate('/')}>Logout</li>
         </ul>
       </nav>
 

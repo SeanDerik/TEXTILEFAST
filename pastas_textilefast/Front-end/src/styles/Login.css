@@ -1,13 +1,12 @@
-/* Container principal da página */
 .login-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: #f4f4f4; /* Cor de fundo */
+  background-color: #f4f4f4; 
 }
 
-/* Conteúdo principal (logo e botões) */
+
 .login-content {
   display: flex;
   flex-direction: column;
@@ -20,22 +19,22 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Logo */
+
 .littlelogo {
   margin-bottom: 20px;
   max-width: 70%;
   height: auto;
 }
 
-/* Container dos botões */
+
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 10px; /* Espaçamento entre os botões */
+  gap: 10px;
   margin-top: 20px;
 }
 
-/* Estilo dos botões de login e registro */
+
 button {
   padding: 12px 20px;
   border: none;
@@ -45,7 +44,7 @@ button {
   transition: background-color 0.3s ease;
 }
 
-/* Botão de login */
+
 .login-button {
   background-color: #FF0048;
   color: white;
@@ -55,7 +54,6 @@ button {
   background-color: #E60040;
 }
 
-/* Botão de registrar */
 .registrar-button {
   background-color: #ccc;
   color: #333;
@@ -65,7 +63,7 @@ button {
   background-color: #999;
 }
 
-/* Responsividade para telas pequenas */
+
 @media (max-width: 480px) {
   .login-content {
     padding: 15px;

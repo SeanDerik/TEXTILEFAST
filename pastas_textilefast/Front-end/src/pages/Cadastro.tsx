@@ -3,6 +3,7 @@ import '../styles/Cadastro.css';
 import { useNavigate } from 'react-router-dom';
 import useValidarCNPJ from '../hooks/ValidaCNPJ';
 import axios from 'axios';
+import reclameAquiLogo from "../assets/reclame_aqui_logo.jpeg"
 
 interface FormData {
   nome: string;
@@ -16,6 +17,7 @@ interface FormData {
   telefone: string;
   endereco: string;
   termosAceitos: boolean;
+  reclameaqui: string;
 }
 
 const Cadastro: React.FC = () => {
@@ -31,6 +33,7 @@ const Cadastro: React.FC = () => {
     telefone: '',
     endereco: '',
     termosAceitos: false,
+    reclameaqui: '',
   });
 
   const [cnpjValido, setCnpjValido] = useState(true);
@@ -75,6 +78,10 @@ const Cadastro: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (formData.tipoEmpresa === 'comprador') {
+      formData.reclameaqui = null;
+    }
     if (!cnpjValido) {
       alert('CNPJ inválido!');
       return;
@@ -97,6 +104,7 @@ const Cadastro: React.FC = () => {
       telefone: formData.telefone,
       endereco: formData.endereco,
       senha: formData.senha,
+      reclameaqui: formData.reclameaqui,
     };
 
     try {
@@ -161,6 +169,27 @@ const Cadastro: React.FC = () => {
               <option value="fornecedor">Fornecedor</option>
             </select>
           </div>
+
+          {formData.tipoEmpresa === 'fornecedor' && (
+            <div className="form-group">
+              <label htmlFor="reclameaqui">
+                <img src={reclameAquiLogo} alt="Reclame Aqui Logo" className="reclame-aqui-logo" />
+                Reclame Aqui{' '}
+                <span className="info-icon" title="O nome da empresa tem que estar idêntico ao nome cadastrado no Reclame Aqui">
+                  ℹ️
+                </span>
+              </label>
+              <input
+                type="text"
+                id="reclameaqui"
+                name="reclameaqui"
+                value={formData.reclameaqui}
+                onChange={handleChange}
+                placeholder="Nome do Reclame Aqui"
+                required
+              />
+            </div>
+          )}
 
           <div className="form-group">
             <label htmlFor="senha">Senha</label>

@@ -33,10 +33,10 @@ const Loginform: React.FC = () => {
   };
 
   return (
-    <div className="login-form-container">
-      <form onSubmit={handleLogin} className="login-form">
+    <div className="unique-login-form-container">
+      <form onSubmit={handleLogin} className="unique-login-form">
         <h2>Login</h2>
-        <div className="form-group">
+        <div className="unique-login-form-group">
           <label>
             CNPJ:
             <input
@@ -44,10 +44,11 @@ const Loginform: React.FC = () => {
               value={cnpj}
               onChange={(e) => setCnpj(e.target.value)}
               required
+              className="unique-login-input"
             />
           </label>
         </div>
-        <div className="form-group">
+        <div className="unique-login-form-group">
           <label>
             Senha:
             <input
@@ -55,14 +56,15 @@ const Loginform: React.FC = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
+              className="unique-login-input"
             />
           </label>
         </div>
-        <button type="submit">Login</button>
-        {errorMessage && <p className="error-message">{errorMessage}</p>}
+        <button type="submit" className="unique-login-button">Login</button>
+        {errorMessage && <p className="unique-login-error-message">{errorMessage}</p>}
       </form>
     </div>
-  );
+  );  
 };
 
 export default Loginform;

@@ -8,8 +8,9 @@ import Profilepage from "../pages/Profilepage";
 import { Carrinho } from "../pages/Carrinho";
 import AdicionarProduto from "../pages/adicionarProdutos";
 import Termos from "../components/Termos";
-import FornecedorProfile  from "../pages/perfil-fornecedor";
+import FornecedorProfile from "../pages/perfil-fornecedor";
 import { ProdutoDetalhes } from "../pages/ProdutoDetalhes";
+import { SimularCompra } from "../pages/SimularCompra"; // Importação da nova página
 
 import { Routes, Route } from "react-router-dom";
 import '../styles/index.css';
@@ -32,7 +33,8 @@ export function Approutes() {
                 <Route path="/adicionar-produto" element={<AdicionarProduto />} />
                 <Route path="/termos" element={<Termos />} />
                 <Route path="/carrinho" element={<Carrinho />} />
-                <Route path="/fornecedor-profile/:empresa_id?" element={<FornecedorProfile />} /> {/* Rota atualizada */}
+                <Route path="/fornecedor-profile/:empresa_id?" element={<FornecedorProfile />} />
+                <Route path="/simular-compra/:produto_id" element={<SimularCompra />} /> 
             </Routes>
         </>
     );

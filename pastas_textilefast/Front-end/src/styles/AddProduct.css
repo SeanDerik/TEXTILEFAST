@@ -1,89 +1,119 @@
-.cadastro-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #fff;
-  }
-  
-  .header {
-    width: 100%;
-    background-color: #FF0048;
-    padding: 20px;
-    text-align: center;
-    color: white;
-    font-size: 24px;
-    font-weight: bold;
-  }
-  
-  .cadastro-content {
-    max-width: 500px;
-    width: 100%;
-    background-color: #f9f9f9;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-    margin-top: 30px;
-  }
-  
-  h2 {
-    text-align: center;
-    margin-bottom: 30px;
-    color: #FF0048;
-    font-size: 22px;
-  }
-  
-  .form-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #333;
-  }
-  
-  input {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-  }
-  
-  textarea {
-    width: 100%;
-    padding: 12px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
-    box-sizing: border-box;
-    resize: vertical;
-  }
-  
-  .cadastro-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #FF0048;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .cadastro-button:hover {
-    background-color: #E60040;
-  }
-  
-  .error {
-    color: red;
-    font-size: 14px;
-    text-align: center;
-    margin-top: 10px;
-  }
-  
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background-color: #fff;
+}
+
+.navbar {
+  width: 100%;
+  background-color: #FF0048;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.navbar-logo {
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.navbar-menu {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+}
+
+.navbar-menu li {
+  cursor: pointer;
+}
+
+/* Container principal */
+.add-product-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fff;
+}
+
+.add-product-container h1 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #FF0048;
+  font-size: 24px;
+}
+
+.add-product-container form {
+  max-width: 500px;
+  width: 100%;
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.add-product-container form > div {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.add-product-container label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: #333;
+}
+
+.add-product-container input,
+.add-product-container select,
+.add-product-container textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  box-sizing: border-box;
+}
+
+.add-product-container textarea {
+  resize: vertical;
+}
+
+.add-product-container button {
+  width: 100%;
+  padding: 12px;
+  background-color: #FF0048;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.add-product-container button:hover {
+  background-color: #E60040;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+  margin-top: 10px;
+}

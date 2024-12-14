@@ -9,6 +9,7 @@ import profile from './routes/profileRoute.mjs';
 import verifyToken from './utils/authMiddleware.js';
 import produtosRoutes from './routes/produtosRoutes/produtosRouters.mjs';
 import categoriasRoutes from './routes/produtosRoutes/categoriasRoutes.mjs';
+import fornecedorRoutes from './routes/fornecedores.mjs'
 import { upload } from './utils/uploadConfig.mjs';
 import path from 'path';
 import fs from 'fs';
@@ -30,6 +31,7 @@ app.use('/api/empresas', empresaRoutes);
 app.use('/api', loginRoutes);
 app.use('/api/carrinho', carrinhoRoute);
 app.use('/api/dataProfile', verifyToken, profile);
+app.use('/api/fornecedores', fornecedorRoutes);
 app.use('/api/produtos', produtosRoutes);
 app.use('/api/categorias', categoriasRoutes);
 

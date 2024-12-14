@@ -1,24 +1,24 @@
 .buy-button {
-    background: linear-gradient(45deg, #fc173d, #fe7b86); /* Gradient background */
-    color: #ffffff;                /* White text color */
-    border: none;                  /* No border */
-    border-radius: 8px;            /* Rounded corners */
-    padding: 12px 24px;            /* Button padding */
-    font-size: 16px;               /* Font size */
-    font-weight: bold;             /* Bold text */
-    cursor: pointer;               /* Pointer cursor on hover */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Subtle shadow */
-    transition: all 0.3s ease;     /* Smooth transition */
-    text-transform: uppercase;     /* Uppercase text */
+    background: linear-gradient(45deg, #fc173d, #fe7b86); 
+    color: #ffffff;                
+    border: none;                  
+    border-radius: 8px;            
+    padding: 12px 24px;            
+    font-size: 16px;               
+    font-weight: bold;            
+    cursor: pointer;               
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); 
+    transition: all 0.3s ease;    
+    text-transform: uppercase;     
 }
 
 .buy-button:hover {
-    background: linear-gradient(45deg, #ff5760, #ff7e5f); /* Reverse gradient on hover */
-    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
-    transform: translateY(-3px); /* Moves the button up on hover */
+    background: linear-gradient(45deg, #ff5760, #ff7e5f);
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px); 
 }
 
 .buy-button:active {
-    transform: translateY(1px);   /* Button moves slightly down on click */
-    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2); /* Lighter shadow on click */
+    transform: translateY(1px);   
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
 }

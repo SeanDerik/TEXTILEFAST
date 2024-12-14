@@ -1,22 +1,40 @@
-.section {
-    margin: 50px;
-    display: flex;            /* Enable flexbox */
-    flex-direction: row;     /* Arrange items in a row (side by side) */
-    justify-content: space-between; /* Optional: space items evenly */
-    align-items: center;      /* Optional: center items vertically */
-    gap: 20px;               /* Optional: add space between items */
-}
-
 .destaques {
-    width: 90%;
+  padding: 20px;
+  background-color: #f4f4f4;
 }
 
 .promocao-titulo {
-    font-size: 40px;
-    margin: 50px;
-    display: flex;            /* Enable flexbox */
-    flex-direction: row;     /* Arrange items in a row (side by side) */
-    justify-content: space-between; /* Optional: space items evenly */
-    align-items: center;      /* Optional: center items vertically */
-    gap: 20px; 
+  text-align: center;
+  color: #FF0048;
+  margin-bottom: 20px;
 }
+
+.section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.destaques .produto {
+  flex: 1 1 calc(25% - 20px);
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.produto img {
+  max-width: 100%;
+  max-height: 150px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+  border-radius: 4px;
+}
+
+
+
+
+
+

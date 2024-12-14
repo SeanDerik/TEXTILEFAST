@@ -1,6 +1,5 @@
 import { Link } from 'react-router-dom'; 
 import { Homebutton } from "./Homebutton";
-import { Catalogbutton } from "./Catalogbutton";
 import { Profilebutton } from "./Profilebutton";
 import { Logoutbutton } from "./Logoutbutton";
 import Textilefastlogo from "../assets/textilefastlogo.png";
@@ -17,7 +16,6 @@ export function Navbar() {
         </div>
         <div className="navbar-buttons">
           <Homebutton />
-          <Catalogbutton />
           <Profilebutton />
           <Logoutbutton />
         </div>

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { jwtDecode } from 'jwt-decode';
-import { Navbar } from '../components/Navbar'; 
 import Footer from '../components/Footer';
 import '../styles/AddProduct.css';
 
@@ -91,74 +90,82 @@ const AdicionarProduto: React.FC = () => {
       setErro('Erro ao adicionar produto');
     }
   };
-
   return (
-    <div className="add-product-container">
-      <Navbar />
-      <h1>Adicionar Produto</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Nome do Produto</label>
-          <input
-            type="text"
-            value={nome_Produto}
-            onChange={(e) => setnome_Produto(e.target.value)}
-          />
+    <div>
+      <nav className="navbar">
+        <div className="navbar-logo" onClick={() => navigate('/home')}>
+          <span>Textilefast</span>
         </div>
-        <div>
-          <label>Descrição</label>
-          <textarea
-            value={descricao}
-            onChange={(e) => setDescricao(e.target.value)}
-          ></textarea>
-        </div>
-        <div>
-          <label>Preço</label>
-          <input
-            type="number"
-            value={preco}
-            onChange={(e) => setPreco(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Estoque</label>
-          <input
-            type="number"
-            value={estoque}
-            onChange={(e) => setEstoque(e.target.value)}
-          />
-        </div>
-        <div>
-          <label>Categoria</label>
-          <select
-            value={categoriaId}
-            onChange={(e) => setCategoriaId(e.target.value)}
-          >
-            <option value="">Selecione uma Categoria</option>
-            {categorias.map((categoria) => (
-              <option key={categoria.categoria_id} value={categoria.categoria_id}>
-                {categoria.nome_categoria}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label>Imagem</label>
-          <input
-            type="file"
-            onChange={(e) => {
-              const selectedFile = e.target.files ? e.target.files[0] : null;
-              setImagem(selectedFile);
-              console.log('Imagem selecionada:', selectedFile);
-            }}
-          />
-        </div>
-        {erro && <p className="error">{erro}</p>}
-        <button type="submit">Adicionar Produto</button>
-      </form>
-      <Footer />
+        <ul className="navbar-menu">
+          <li onClick={() => navigate('/')}>Logout</li>
+        </ul>
+      </nav>
+      <div className="add-product-container">
+        <h1>Adicionar Produto</h1>
+        <form onSubmit={handleSubmit}>
+          <div>
+            <label>Nome do Produto</label>
+            <input
+              type="text"
+              value={nome_Produto}
+              onChange={(e) => setnome_Produto(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Descrição</label>
+            <textarea
+              value={descricao}
+              onChange={(e) => setDescricao(e.target.value)}
+            ></textarea>
+          </div>
+          <div>
+            <label>Preço</label>
+            <input
+              type="number"
+              value={preco}
+              onChange={(e) => setPreco(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Estoque</label>
+            <input
+              type="number"
+              value={estoque}
+              onChange={(e) => setEstoque(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Categoria</label>
+            <select
+              value={categoriaId}
+              onChange={(e) => setCategoriaId(e.target.value)}
+            >
+              <option value="">Selecione uma Categoria</option>
+              {categorias.map((categoria) => (
+                <option key={categoria.categoria_id} value={categoria.categoria_id}>
+                  {categoria.nome_categoria}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div>
+            <label>Imagem</label>
+            <input
+              type="file"
+              onChange={(e) => {
+                const selectedFile = e.target.files ? e.target.files[0] : null;
+                setImagem(selectedFile);
+                console.log('Imagem selecionada:', selectedFile);
+              }}
+            />
+          </div>
+          {erro && <p className="error">{erro}</p>}
+          <button type="submit">Adicionar Produto</button>
+        </form>
+        <Footer />
+      </div>
     </div>
-  );
+  );  
 };
 
 export default AdicionarProduto;
