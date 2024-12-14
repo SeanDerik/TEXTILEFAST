@@ -27,18 +27,18 @@ interface Fornecedor {
 }
 
 const FornecedorProfile: React.FC = () => {
-  const { empresa_id } = useParams<{ empresa_id: string }>(); 
+  const { empresa_id } = useParams<{ empresa_id: string }>();
   const [fornecedor, setFornecedor] = useState<Fornecedor | null>(null);
   const [produtos, setProdutos] = useState<Produto[]>([]);
-  const [loading, setLoading] = useState<boolean>(true); 
-  const [error, setError] = useState<string | null>(null); 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
 
   const getToken = () => localStorage.getItem('userToken');
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchFornecedorData = async () => {
-      setLoading(true); 
+      setLoading(true);
       try {
         const token = getToken();
         if (!token) {
@@ -62,7 +62,7 @@ const FornecedorProfile: React.FC = () => {
         console.error('Erro ao carregar dados do fornecedor:', err);
         setError('Erro ao carregar dados. Tente novamente.');
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
@@ -121,10 +121,13 @@ const FornecedorProfile: React.FC = () => {
                   <p><strong>Descrição:</strong> {produto.descricao}</p>
                   <p>
                     <strong>Preço:</strong>
-                    {typeof produto.preco === 'number'
+                    {typeof produto.preco === 'number' && !isNaN(produto.preco)
                       ? `R$ ${produto.preco.toFixed(2)}`
-                      : 'Preço inválido'}
+                      : (typeof produto.preco === 'string' && !isNaN(parseFloat(produto.preco)))
+                        ? `R$ ${parseFloat(produto.preco).toFixed(2)}`
+                        : 'Preço inválido'}
                   </p>
+
                   <p><strong>Estoque:</strong> {produto.estoque}</p>
                   <p><strong>Categoria:</strong> {produto.categoria_id}</p>
                   <p><strong>Data de Cadastro:</strong> {new Date(produto.data_cadastro).toLocaleDateString()}</p>
